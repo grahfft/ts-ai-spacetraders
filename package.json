@@ -4,13 +4,10 @@
   "description": "TypeScript AI Space Traders implementation",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "watch": "tsc --watch",
-    "test": "jest",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint src/**/*.ts --fix"
+    "build": "nx run-many -t build --all",
+    "start": "nx serve agent",
+    "test": "nx run-many -t test --all",
+    "lint": "nx run-many -t lint --all"
   },
   "keywords": [
     "typescript",
@@ -22,18 +19,38 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.0.0",
-    "jest": "^29.0.0",
+    "@nx/esbuild": "21.4.1",
+    "@nx/eslint": "21.4.1",
+    "@nx/eslint-plugin": "21.4.1",
+    "@nx/jest": "21.4.1",
+    "@nx/js": "^21.4.1",
+    "@nx/node": "^21.4.1",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
     "@types/jest": "^29.0.0",
+    "@types/node": "20.19.9",
+    "@typescript-eslint/eslint-plugin": "^7.16.0",
+    "@typescript-eslint/parser": "^7.16.0",
+    "esbuild": "^0.19.2",
+    "eslint": "~8.57.0",
+    "eslint-config-prettier": "^10.0.0",
+    "jest": "^29.0.0",
+    "jest-environment-node": "^30.0.2",
+    "jest-util": "^30.0.2",
+    "jsonc-eslint-parser": "^2.1.0",
+    "nx": "21.4.1",
+    "prettier": "^2.6.2",
     "ts-jest": "^29.0.0",
     "ts-node": "^10.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "~5.8.2",
+    "verdaccio": "^6.0.5"
   },
   "dependencies": {
-    "axios": "^1.6.0",
-    "dotenv": "^16.0.0"
-  }
+    "axios": "^1.11.0",
+    "dotenv": "^16.6.1",
+    "spacetraders-sdk": "^1.9.1",
+    "tslib": "^2.3.0"
+  },
+  "nx": {}
 }
