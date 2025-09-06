@@ -1,5 +1,5 @@
 export default {
-  displayName: 'ui-chakra',
+  displayName: 'create-agent',
   preset: '../../../jest.preset.js',
   testEnvironment: 'jsdom',
   transform: {
@@ -7,5 +7,6 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  coverageDirectory: '../../../coverage/libs/components/ui-chakra',
+  coverageDirectory: '../../../coverage/libs/components/create-agent',
 };
+

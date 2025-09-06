@@ -1,7 +1,7 @@
 "use client"
 
 import styles from './page.module.css';
-import { AuthRegisterForm } from '@repo/ui-auth';
+import { AuthRegisterForm } from '@spacetraders/create-agent';
 
 export default function Page() {
   return (

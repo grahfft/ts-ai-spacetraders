@@ -1,7 +1,7 @@
 {
-  "name": "ui-auth",
+  "name": "create-agent",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/components/ui-auth/src",
+  "sourceRoot": "libs/components/create-agent/src",
   "projectType": "library",
   "tags": ["type:lib", "scope:components"],
   "targets": {
@@ -9,18 +9,18 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/components/ui-auth",
-        "main": "libs/components/ui-auth/src/index.ts",
-        "tsConfig": "libs/components/ui-auth/tsconfig.lib.json",
-        "assets": ["libs/components/ui-auth/*.md"]
+        "outputPath": "dist/libs/components/create-agent",
+        "main": "libs/components/create-agent/src/index.ts",
+        "tsConfig": "libs/components/create-agent/tsconfig.lib.json",
+        "assets": ["libs/components/create-agent/*.md"]
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": [
-          "libs/components/ui-auth/**/*.ts",
-          "libs/components/ui-auth/**/*.tsx"
+          "libs/components/create-agent/**/*.ts",
+          "libs/components/create-agent/**/*.tsx"
         ],
         "fix": true,
         "ignorePath": ".eslintignore"

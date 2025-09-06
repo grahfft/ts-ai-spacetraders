@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './global.css';
-import { AppChakraProvider } from '@repo/ui-chakra';
+import { AppChakraProvider } from '@spacetraders/ui-chakra';
 
 export const metadata: Metadata = {
   title: 'SpaceTraders Site',

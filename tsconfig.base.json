@@ -10,8 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "@repo/ui-auth": ["libs/components/ui-auth/src/index.ts"],
-      "@repo/ui-chakra": ["libs/components/ui-chakra/src/index.ts"]
+      "@spacetraders/create-agent": ["libs/components/create-agent/src/index.ts"],
+      "@spacetraders/ui-chakra": ["libs/components/ui-chakra/src/index.ts"]
     }
   }
 }
