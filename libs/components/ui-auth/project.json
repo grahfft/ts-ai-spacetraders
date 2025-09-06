@@ -1,0 +1,30 @@
+{
+  "name": "ui-auth",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/components/ui-auth/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:components"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/components/ui-auth",
+        "main": "libs/components/ui-auth/src/index.ts",
+        "tsConfig": "libs/components/ui-auth/tsconfig.lib.json",
+        "assets": ["libs/components/ui-auth/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/ui-auth/**/*.ts",
+          "libs/components/ui-auth/**/*.tsx"
+        ],
+        "fix": true,
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
+}

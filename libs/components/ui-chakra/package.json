@@ -1,10 +1,12 @@
 {
-  "name": "@repo/spacetraders-api",
+  "name": "@repo/ui-chakra",
   "version": "0.0.1",
   "type": "commonjs",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "react": "19.0.0",
+    "@chakra-ui/react": "^2.10.9"
   }
 }
