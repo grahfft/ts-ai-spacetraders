@@ -1,0 +1,31 @@
+import axios from 'axios';
+
+export interface RegisterAgentInput {
+  symbol: string;
+  faction: string;
+  email?: string;
+  baseUrl?: string;
+}
+
+export interface RegisterAgentResponseData {
+  token?: string;
+  data?: { token?: string };
+  [key: string]: unknown;
+}
+
+export async function registerAgentServer(
+  input: RegisterAgentInput
+): Promise<RegisterAgentResponseData> {
+  const { symbol, faction, email, baseUrl } = input;
+  const accountToken = process.env.SPACE_TRADERS_ACCOUNT_TOKEN;
+
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (accountToken) headers.Authorization = `Bearer ${accountToken}`;
+
+  const http = axios.create({
+    baseURL: baseUrl ?? 'https://api.spacetraders.io/v2',
+    headers,
+  });
+  const { data } = await http.post('/register', { symbol, faction, email });
+  return data as RegisterAgentResponseData;
+}

@@ -39,15 +39,11 @@ export function AuthRegisterForm({
     setLoading(true);
     setError(null);
     try {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-      if (accountToken) headers.Authorization = `Bearer ${accountToken}`;
-      const http = axios.create({
-        baseURL: 'https://api.spacetraders.io/v2',
-        headers,
+      const { data } = await axios.post('/api/create-new-agent', {
+        symbol,
+        faction,
+        email,
       });
-      const { data } = await http.post('/register', { symbol, faction, email });
       const tokenValue = data?.data?.token ?? data?.token ?? null;
       setToken(tokenValue);
       if (tokenValue) localStorage.setItem('SPACE_TRADERS_TOKEN', tokenValue);
