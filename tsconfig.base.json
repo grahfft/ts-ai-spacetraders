@@ -10,11 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "@spacetraders/create-agent": [
-        "libs/components/create-agent-form/src/index.ts"
-      ],
       "@spacetraders/chakra-provider": [
         "libs/components/chakra-provider/src/index.ts"
+      ],
+      "@spacetraders/create-agent": [
+        "libs/components/create-agent-form/src/index.ts"
       ],
       "services": ["libs/services/spacetraders/src/index.ts"]
     }
