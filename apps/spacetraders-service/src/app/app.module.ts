@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AgentsController } from './agents.controller';
+// Removed default AppController/AppService; this service composes feature modules only
+import { CreateAgentModule } from '@spacetraders/api-create-agent';
 
 @Module({
-  imports: [],
-  controllers: [AppController, AgentsController],
-  providers: [AppService],
+  imports: [CreateAgentModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
