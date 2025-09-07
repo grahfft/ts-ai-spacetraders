@@ -14,10 +14,8 @@ export class CreateAgentController {
       return result;
     } catch (err: any) {
       const status = err?.response?.status ?? 500;
-      const payload = err?.response?.data ?? {
-        message: err?.message ?? 'Internal server error',
-      };
-      throw new HttpException(payload, status);
+      const payload = err?.response?.data ?? { error: { message: err?.message ?? 'Internal server error' } };
+      throw new HttpException({ statusCode: status, message: payload }, status);
     }
   }
 }
