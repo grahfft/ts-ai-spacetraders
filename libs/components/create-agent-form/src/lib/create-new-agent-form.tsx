@@ -51,10 +51,11 @@ export function CreateNewAgentForm({
       const tokenValue = data?.data?.token ?? data?.token ?? null;
       setToken(tokenValue);
       if (tokenValue) localStorage.setItem('SPACE_TRADERS_TOKEN', tokenValue);
-    } catch (err: any) {
+    } catch (err) {
+      const unknownError = err as { response?: { data?: { error?: { message?: string } } }; message?: string };
       setError(
-        err?.response?.data?.error?.message ||
-          err.message ||
+        unknownError?.response?.data?.error?.message ||
+          unknownError?.message ||
           'Registration failed'
       );
     } finally {
@@ -136,7 +137,7 @@ export function CreateNewAgentForm({
         </FormControl>
         <Button
           mt={2}
-          onClick={() => token && localStorage.setItem('SPACE_TRADERS_TOKEN', token!)}
+          onClick={() => token && localStorage.setItem('SPACE_TRADERS_TOKEN', token)}
         >
           Save Token
         </Button>

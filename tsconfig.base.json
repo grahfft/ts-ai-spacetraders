@@ -24,6 +24,12 @@
       "@spacetraders/create-agent": [
         "libs/components/create-agent-form/src/index.ts"
       ],
+      "@spacetraders/core-spacetraders": [
+        "libs/core/spacetraders/src/index.ts"
+      ],
+      "@spacetraders/core-spacetraders/register": [
+        "libs/core/spacetraders/src/lib/register-agent.ts"
+      ]
     }
   }
 }
