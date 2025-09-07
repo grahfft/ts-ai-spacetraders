@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { registerAgentServer } from 'services';
+import { registerAgent } from '@spacetraders/api-create-agent/register';
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const data = await registerAgentServer({ symbol, faction, email });
+    const data = await registerAgent({ symbol, faction, email });
     return NextResponse.json(data, { status: 200 });
   } catch (error: any) {
     const message = error?.response?.data ?? {

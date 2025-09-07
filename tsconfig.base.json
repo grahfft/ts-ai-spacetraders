@@ -15,13 +15,16 @@
       "@spacetraders/api-create-agent": [
         "libs/api/create-agent-module/src/index.ts"
       ],
+      "@spacetraders/api-create-agent/register": [
+        "libs/api/create-agent-module/src/lib/register-agent.ts"
+      ],
       "@spacetraders/chakra-provider": [
         "libs/components/chakra-provider/src/index.ts"
       ],
       "@spacetraders/create-agent": [
         "libs/components/create-agent-form/src/index.ts"
       ],
-      "services": ["libs/services/spacetraders/src/index.ts"]
+      
     }
   }
 }
