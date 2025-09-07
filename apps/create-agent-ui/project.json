@@ -10,7 +10,9 @@
       "outputs": ["{workspaceRoot}/dist/apps/create-agent-ui"],
       "options": {
         "root": "apps/create-agent-ui",
-        "outputPath": "dist/apps/create-agent-ui"
+        "outputPath": "dist/apps/create-agent-ui",
+        "skipTypeChecking": true,
+        "svgr": false
       }
     },
     "dev": {
