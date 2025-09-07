@@ -13,9 +13,12 @@ function setup() {
 
 describe('CreateNewAgentForm', () => {
   beforeEach(() => {
-    jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key: string) => null);
-    jest.spyOn(window.localStorage.__proto__, 'setItem').mockImplementation(() => {});
-    (mockedAxios.post as any) = jest.fn();
+    jest
+      .spyOn(window.localStorage.__proto__, 'getItem')
+      .mockImplementation((key: string) => null);
+    jest
+      .spyOn(window.localStorage.__proto__, 'setItem')
+      .mockImplementation(() => undefined);
   });
 
   afterEach(() => {
@@ -23,7 +26,7 @@ describe('CreateNewAgentForm', () => {
   });
 
   it('submits and stores token on success', async () => {
-    (mockedAxios.post as any).mockResolvedValue({ data: { data: { token: 'T123' } } });
+    mockedAxios.post.mockResolvedValue({ data: { data: { token: 'T123' } } } as any);
 
     setup();
 
@@ -41,7 +44,7 @@ describe('CreateNewAgentForm', () => {
   });
 
   it('renders error on failure', async () => {
-    (mockedAxios.post as any).mockRejectedValue({ response: { data: { error: { message: 'Bad' } } } });
+    mockedAxios.post.mockRejectedValue({ response: { data: { error: { message: 'Bad' } } } } as any);
 
     setup();
     fireEvent.click(screen.getByRole('button', { name: /register/i }));
