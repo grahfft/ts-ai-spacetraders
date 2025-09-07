@@ -4,7 +4,7 @@
   "description": "TypeScript AI Space Traders implementation",
   "main": "dist/index.js",
   "scripts": {
-    "build": "nx run-many -t build --all",
+    "build": "nx run-many -t build --all --exclude=ts-ai-spactraders",
     "start": "nx serve create-agent-ui",
     "test": "nx run-many -t test --projects=create-agent,chakra-provider",
     "lint": "nx run-many -t lint --projects=create-agent-ui,create-agent,chakra-provider,api"
