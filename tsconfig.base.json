@@ -24,7 +24,6 @@
       "@spacetraders/create-agent": [
         "libs/components/create-agent-form/src/index.ts"
       ],
-      
     }
   }
 }
