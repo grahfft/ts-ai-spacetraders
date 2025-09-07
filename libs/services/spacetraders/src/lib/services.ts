@@ -18,11 +18,16 @@ export async function registerAgentServer(
 ): Promise<RegisterAgentResponseData> {
   const { symbol, faction, email, baseUrl } = input;
   const accountToken = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
+  if (!accountToken) {
+    throw new Error(
+      'Missing SPACE_TRADERS_ACCOUNT_TOKEN. Add it to .env.local and restart the server.'
+    );
+  }
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    Authorization: `Bearer ${accountToken}`,
   };
-  if (accountToken) headers['Authorization'] = `Bearer ${accountToken}`;
 
   const http = axios.create({
     baseURL: baseUrl ?? 'https://api.spacetraders.io/v2',
