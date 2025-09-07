@@ -3,4 +3,4 @@ packages:
   - 'libs/*'
   - 'libs/components/ui-auth'
   - 'libs/components/*'
-  - 'libs/services/*'
+  - 'libs/api/*'
