@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "nx run-many -t build --all",
-    "start": "nx serve agent",
-    "test": "nx run-many -t test --all",
-    "lint": "nx run-many -t lint --all"
+    "start": "nx serve create-agent-ui",
+    "test": "nx run-many -t test --projects=create-agent,chakra-provider,services",
+    "lint": "nx run-many -t lint --projects=create-agent-ui,create-agent,chakra-provider,services -- --fix"
   },
   "keywords": [
     "typescript",
@@ -39,6 +39,7 @@
     "@swc/cli": "~0.6.0",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@swc/jest": "^0.2.39",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "16.1.0",

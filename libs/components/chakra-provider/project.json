@@ -1,0 +1,30 @@
+{
+  "name": "ui-chakra",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/components/chakra-provider/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:components"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/components/chakra-provider",
+        "main": "libs/components/chakra-provider/src/index.ts",
+        "tsConfig": "libs/components/chakra-provider/tsconfig.lib.json",
+        "assets": ["libs/components/chakra-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/chakra-provider/**/*.ts",
+          "libs/components/chakra-provider/**/*.tsx"
+        ],
+        "fix": true,
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
+}

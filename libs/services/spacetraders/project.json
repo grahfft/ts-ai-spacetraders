@@ -1,0 +1,27 @@
+{
+  "name": "services",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/services/spacetraders/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/services/spacetraders",
+        "main": "libs/services/spacetraders/src/index.ts",
+        "tsConfig": "libs/services/spacetraders/tsconfig.lib.json",
+        "assets": ["libs/services/spacetraders/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/services/spacetraders/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
