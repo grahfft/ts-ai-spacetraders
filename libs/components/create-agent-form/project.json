@@ -1,0 +1,30 @@
+{
+  "name": "create-agent",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/components/create-agent-form/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:components"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/components/create-agent-form",
+        "main": "libs/components/create-agent-form/src/index.ts",
+        "tsConfig": "libs/components/create-agent-form/tsconfig.lib.json",
+        "assets": ["libs/components/create-agent-form/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/create-agent-form/**/*.ts",
+          "libs/components/create-agent-form/**/*.tsx"
+        ],
+        "fix": true,
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
+}
