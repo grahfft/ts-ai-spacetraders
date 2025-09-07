@@ -39,7 +39,11 @@ export function CreateNewAgentForm({
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.post('/api/create-new-agent', {
+      const serviceBase = process.env.NEXT_PUBLIC_SERVICE_URL;
+      const url = serviceBase
+        ? `${serviceBase.replace(/\/$/, '')}/api/agents/register`
+        : '/api/create-new-agent';
+      const { data } = await axios.post(url, {
         symbol,
         faction,
         email,
