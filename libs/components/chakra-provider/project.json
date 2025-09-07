@@ -1,5 +1,5 @@
 {
-  "name": "ui-chakra",
+  "name": "chakra-provider",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/components/chakra-provider/src",
   "projectType": "library",

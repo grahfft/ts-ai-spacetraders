@@ -13,7 +13,7 @@ export interface RegisterAgentResponseData {
   [key: string]: unknown;
 }
 
-export async function registerAgentServer(
+export async function registerAgent(
   input: RegisterAgentInput
 ): Promise<RegisterAgentResponseData> {
   const { symbol, faction, email, baseUrl } = input;
@@ -36,3 +36,5 @@ export async function registerAgentServer(
   const { data } = await http.post('/register', { symbol, faction, email });
   return data as RegisterAgentResponseData;
 }
+
+
