@@ -244,6 +244,18 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(webpack-dev-server@5.2.2)(webpack@5.101.3)
 
+  libs/api/create-agent-module:
+    dependencies:
+      '@nestjs/common':
+        specifier: ^11.0.0
+        version: 11.1.6(reflect-metadata@0.1.14)(rxjs@7.8.2)
+      services:
+        specifier: workspace:*
+        version: link:../../services/spacetraders
+      tslib:
+        specifier: ^2.3.0
+        version: 2.8.1
+
   libs/components/chakra-provider:
     dependencies:
       '@chakra-ui/react':
