@@ -43,7 +43,7 @@ services:
       NX_DAEMON: 'false'
     ports:
       - "4200:4200"
-    command: sh -lc "rm -rf apps/create-agent-ui/.next && pnpm exec nx run create-agent-ui:dev"
+    command: sh -lc "rm -rf apps/spacetraders-ui/.next && pnpm exec nx run spacetraders-ui:dev"
     volumes:
       - ./nx.json:/workspace/nx.json:ro
       - ./.nxignore:/workspace/.nxignore:ro
