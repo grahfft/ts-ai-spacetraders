@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "nx run-many -t build --all --exclude=ts-ai-spactraders",
-    "start": "nx serve create-agent-ui",
+    "start": "nx serve spacetraders-ui",
     "test": "nx run-many -t test --projects=create-agent,chakra-provider,api",
-    "lint": "nx run-many -t lint --projects=create-agent-ui,create-agent,chakra-provider,api"
+    "lint": "nx run-many -t lint --projects=spacetraders-ui,create-agent,chakra-provider,api"
   },
   "keywords": [
     "typescript",

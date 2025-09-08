@@ -1,16 +1,16 @@
 {
-  "name": "create-agent-ui",
+  "name": "spacetraders-ui",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/create-agent-ui",
+  "sourceRoot": "apps/spacetraders-ui",
   "projectType": "application",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/next:build",
-      "outputs": ["{workspaceRoot}/dist/apps/create-agent-ui"],
+      "outputs": ["{workspaceRoot}/dist/apps/spacetraders-ui"],
       "options": {
-        "root": "apps/create-agent-ui",
-        "outputPath": "dist/apps/create-agent-ui",
+        "root": "apps/spacetraders-ui",
+        "outputPath": "dist/apps/spacetraders-ui",
         "skipTypeChecking": true,
         "svgr": false
       }
@@ -18,7 +18,7 @@
     "dev": {
       "executor": "@nx/next:server",
       "options": {
-        "buildTarget": "create-agent-ui:build",
+        "buildTarget": "spacetraders-ui:build",
         "dev": true,
         "port": 4200
       }
@@ -26,7 +26,7 @@
     "serve": {
       "executor": "@nx/next:server",
       "options": {
-        "buildTarget": "create-agent-ui:build",
+        "buildTarget": "spacetraders-ui:build",
         "dev": true,
         "port": 4200
       }
@@ -35,8 +35,8 @@
       "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": [
-          "apps/create-agent-ui/**/*.ts",
-          "apps/create-agent-ui/**/*.tsx"
+          "apps/spacetraders-ui/**/*.ts",
+          "apps/spacetraders-ui/**/*.tsx"
         ],
         "fix": true,
         "ignorePath": ".eslintignore"
