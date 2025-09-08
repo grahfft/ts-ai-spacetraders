@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AgentEntity } from './agent.entity';
+import { Agent } from './agent.entity';
 import { Transactional } from 'typeorm-transactional';
 import { registerAgent, RegisterAgentInput, RegisterAgentResponseData } from './register-agent';
 
 @Injectable()
 export class AgentsService {
   constructor(
-    @InjectRepository(AgentEntity)
-    private readonly agentRepo: Repository<AgentEntity>
+    @InjectRepository(Agent)
+    private readonly agentRepo: Repository<Agent>
   ) {}
 
   @Transactional()
@@ -28,7 +28,7 @@ export class AgentsService {
   }
 
   @Transactional()
-  async listAgentsByAccountTokenHash(accountToken: string): Promise<AgentEntity[]> {
+  async listAgentsByAccountTokenHash(accountToken: string): Promise<Agent[]> {
     const accountTokenHash = Buffer.from(String(accountToken)).toString('base64');
     return this.agentRepo.find({ where: { accountTokenHash } });
   }

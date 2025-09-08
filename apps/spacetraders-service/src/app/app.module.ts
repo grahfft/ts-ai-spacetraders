@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 import { AgentsModule } from '@spacetraders/api-agents';
-import { AgentEntity } from '@spacetraders/api-agents';
+import { Agent } from '@spacetraders/api-agents';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { AgentEntity } from '@spacetraders/api-agents';
       username: process.env['POSTGRES_USER'] ?? 'spacetraders',
       password: process.env['POSTGRES_PASSWORD'] ?? 'spacetraders',
       database: process.env['POSTGRES_DB'] ?? 'spacetraders',
-      entities: [AgentEntity],
+      entities: [Agent],
       synchronize: true,
     }),
     AgentsModule,
