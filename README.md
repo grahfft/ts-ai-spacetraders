@@ -10,3 +10,4 @@ This monorepo uses Nx to manage a Next.js app, a NestJS service, and shared libr
 - Testing Guide: docs/TESTING.md
 - Contributing: docs/CONTRIBUTING.md
 - Environment: docs/ENVIRONMENT.md
+- Docker: docs/docker.md

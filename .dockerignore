@@ -1,0 +1,22 @@
+node_modules
+.pnpm-store
+
+# Nx / build outputs
+.dist
+/dist
+/.next
+coverage
+
+# VCS
+.git
+.gitignore
+
+# Local env
+.env
+.env.*
+.env.local
+
+# OS / IDE
+.DS_Store
+.vscode
+.idea

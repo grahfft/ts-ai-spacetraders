@@ -1,0 +1,46 @@
+{
+  "name": "spacetraders-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/spacetraders-ui",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/next:build",
+      "outputs": ["{workspaceRoot}/dist/apps/spacetraders-ui"],
+      "options": {
+        "root": "apps/spacetraders-ui",
+        "outputPath": "dist/apps/spacetraders-ui",
+        "skipTypeChecking": true,
+        "svgr": false
+      }
+    },
+    "dev": {
+      "executor": "@nx/next:server",
+      "options": {
+        "buildTarget": "spacetraders-ui:build",
+        "dev": true,
+        "port": 4200
+      }
+    },
+    "serve": {
+      "executor": "@nx/next:server",
+      "options": {
+        "buildTarget": "spacetraders-ui:build",
+        "dev": true,
+        "port": 4200
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/spacetraders-ui/**/*.ts",
+          "apps/spacetraders-ui/**/*.tsx"
+        ],
+        "fix": true,
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
+}
