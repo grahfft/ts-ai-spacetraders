@@ -1,4 +1,4 @@
-import { registerAgent } from '@spacetraders/core-spacetraders/register';
+import { registerAgent } from '@spacetraders/api-create-agent/register';
 
 export interface CreateAgentBody {
   symbol?: string;

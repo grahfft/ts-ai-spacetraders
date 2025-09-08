@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { AgentEntity } from '@spacetraders/models-agents';
+import { Transactional } from 'typeorm-transactional';
 
 export interface RegisterAgentInput {
   symbol: string;
@@ -16,6 +20,12 @@ export interface RegisterAgentResponseData {
 
 @Injectable()
 export class CreateAgentService {
+  constructor(
+    @InjectRepository(AgentEntity)
+    private readonly agentRepo: Repository<AgentEntity>
+  ) {}
+
+  @Transactional()
   async registerAgent(
     input: RegisterAgentInput
   ): Promise<RegisterAgentResponseData> {
@@ -37,6 +47,19 @@ export class CreateAgentService {
       headers,
     });
     const { data } = await http.post('/register', { symbol, faction, email });
+    const tokenValue = (data as any)?.data?.token ?? (data as any)?.token ?? null;
+    if (tokenValue) {
+      const tokenEncoded = Buffer.from(String(tokenValue)).toString('base64');
+      const accountTokenHash = Buffer.from(String(accountToken)).toString('base64');
+      const entity = this.agentRepo.create({
+        symbol,
+        faction,
+        email: email ?? null,
+        tokenEncoded,
+        accountTokenHash,
+      });
+      await this.agentRepo.save(entity);
+    }
     return data as RegisterAgentResponseData;
   }
 }
