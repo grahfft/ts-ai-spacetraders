@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { initializeTransactionalContext } from 'typeorm-transactional';
-import { AgentsModule } from '@spacetraders/api-create-agent';
-import { AgentEntity } from '@spacetraders/models-agents';
+import { AgentsModule } from '@spacetraders/api-agents';
+import { AgentEntity } from '@spacetraders/api-agents';
 
 @Module({
   imports: [

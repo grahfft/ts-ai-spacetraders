@@ -12,11 +12,11 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "@spacetraders/api-create-agent": [
-        "libs/api/create-agent-module/src/index.ts"
+      "@spacetraders/api-agents": [
+        "libs/api/agents-module/src/index.ts"
       ],
-      "@spacetraders/api-create-agent/register": [
-        "libs/api/create-agent-module/src/lib/register-agent.ts"
+      "@spacetraders/api-agents/register": [
+        "libs/api/agents-module/src/lib/register-agent.ts"
       ],
       "@spacetraders/chakra-provider": [
         "libs/components/chakra-provider/src/index.ts"
@@ -25,9 +25,6 @@
         "libs/components/create-agent-form/src/index.ts"
       ],
       
-      "@spacetraders/models-agents": [
-        "libs/models/agents/src/index.ts"
-      ]
     }
   }
 }

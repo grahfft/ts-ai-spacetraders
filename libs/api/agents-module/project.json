@@ -1,7 +1,7 @@
 {
   "name": "api",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/api/create-agent-module/src",
+  "sourceRoot": "libs/api/agents-module/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,9 +9,9 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/api/create-agent-module",
-        "main": "libs/api/create-agent-module/src/index.ts",
-        "tsConfig": "libs/api/create-agent-module/tsconfig.lib.json",
+        "outputPath": "dist/libs/api/agents-module",
+        "main": "libs/api/agents-module/src/index.ts",
+        "tsConfig": "libs/api/agents-module/tsconfig.lib.json",
         "assets": []
       }
     },
@@ -19,7 +19,7 @@
       "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": [
-          "libs/api/create-agent-module/src/**/*.ts"
+          "libs/api/agents-module/src/**/*.ts"
         ],
         "fix": true,
         "ignorePath": ".eslintignore"
