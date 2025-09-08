@@ -38,7 +38,7 @@ docker compose up -d db
 Then run the dev container separately:
 ```bash
 docker run --rm -p 3000:3000 --env POSTGRES_HOST=host.docker.internal --env-file .env.local ts-ai-dev sh -lc "pnpm exec nx run spacetraders-service:serve"
-docker run --rm -p 4200:4200 --env-file .env.local ts-ai-dev sh -lc "pnpm exec nx run create-agent-ui:dev"
+docker run --rm -p 4200:4200 --env-file .env.local ts-ai-dev sh -lc "pnpm exec nx run spacetraders-ui:dev"
 ```
 
 ## Notes

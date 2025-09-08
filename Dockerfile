@@ -22,4 +22,4 @@ ENV NODE_ENV=development
 EXPOSE 4200 3000
 
 # Default command: run both apps (Next dev + Nest serve)
-CMD ["sh","-lc","pnpm exec nx run spacetraders-service:serve & pnpm exec nx run spacetraders-ui:dev"]
+CMD ["sh","-lc","rm -rf apps/spacetraders-ui/.next && pnpm exec nx run spacetraders-service:serve & pnpm exec nx run spacetraders-ui:dev"]
