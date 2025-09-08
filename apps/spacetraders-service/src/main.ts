@@ -8,6 +8,7 @@ import { config as loadEnv } from 'dotenv';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { NestFactory } from '@nestjs/core';
+import { initializeTransactionalContext } from 'typeorm-transactional';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -19,6 +20,7 @@ async function bootstrap() {
     loadEnv();
   }
   const app = await NestFactory.create(AppModule);
+  initializeTransactionalContext();
   app.enableCors({
     origin: [
       /^(http|https):\/\/localhost(?::\d+)?$/,

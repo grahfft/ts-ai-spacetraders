@@ -1,7 +1,7 @@
 import { handleCreateAgent } from './handler';
-import * as core from '@spacetraders/core-spacetraders/register';
+import * as api from '@spacetraders/api-create-agent/register';
 
-jest.mock('@spacetraders/core-spacetraders/register');
+jest.mock('@spacetraders/api-create-agent/register');
 
 describe('handleCreateAgent', () => {
   beforeEach(() => {
@@ -15,14 +15,14 @@ describe('handleCreateAgent', () => {
   });
 
   it('returns 200 and data when register succeeds', async () => {
-    (core.registerAgent as jest.Mock).mockResolvedValue({ ok: true });
+    (api.registerAgent as jest.Mock).mockResolvedValue({ ok: true });
     const res = await handleCreateAgent({ symbol: 'A', faction: 'B' });
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ ok: true });
   });
 
   it('returns 500 and error body on failure', async () => {
-    (core.registerAgent as jest.Mock).mockRejectedValue({ response: { data: { error: 'x' } } });
+    (api.registerAgent as jest.Mock).mockRejectedValue({ response: { data: { error: 'x' } } });
     const res = await handleCreateAgent({ symbol: 'A', faction: 'B' });
     expect(res.status).toBe(500);
     expect(res.body).toEqual({ error: 'x' });

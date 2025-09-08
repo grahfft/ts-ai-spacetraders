@@ -7,4 +7,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../../coverage/libs/api/create-agent-module',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
