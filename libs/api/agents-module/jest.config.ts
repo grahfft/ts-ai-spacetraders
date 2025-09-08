@@ -6,6 +6,6 @@ export default {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/libs/api/create-agent-module',
+  coverageDirectory: '../../../coverage/libs/api/agents-module',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };

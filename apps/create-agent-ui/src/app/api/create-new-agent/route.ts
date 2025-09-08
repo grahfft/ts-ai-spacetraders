@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { registerAgent } from '@spacetraders/api-create-agent/register';
+import { registerAgent } from '@spacetraders/api-agents/register';
 
 export async function POST(req: NextRequest) {
   try {

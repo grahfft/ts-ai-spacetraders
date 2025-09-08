@@ -1,4 +1,4 @@
-import { CreateAgentService } from './create-agent.service';
+import { AgentsService as CreateAgentService } from './agents.service';
 import { Repository } from 'typeorm';
 import axios from 'axios';
 

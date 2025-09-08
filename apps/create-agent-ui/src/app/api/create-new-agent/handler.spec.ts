@@ -1,7 +1,7 @@
 import { handleCreateAgent } from './handler';
-import * as api from '@spacetraders/api-create-agent/register';
+import * as api from '@spacetraders/api-agents/register';
 
-jest.mock('@spacetraders/api-create-agent/register');
+jest.mock('@spacetraders/api-agents/register');
 
 describe('handleCreateAgent', () => {
   beforeEach(() => {
