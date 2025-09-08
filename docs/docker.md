@@ -22,21 +22,26 @@ The container starts:
 - spacetraders-ui (Next.js) on port 4200
 
 ## With PostgreSQL (optional)
-Use the included compose for DB only:
+Run everything with Docker Compose (db + api + web):
 ```bash
-cd apps/spacetraders-service
-docker compose up -d
+docker compose up --build -d
 ```
-Then run the dev container in another terminal:
+This will start:
+- Postgres (service: db)
+- Nest API (service: api)
+- Next UI (service: web)
+
+If you prefer DB-only via compose:
 ```bash
-docker run --rm \
-  -p 4200:4200 -p 3000:3000 \
-  --env POSTGRES_HOST=host.docker.internal \
-  --env-file .env.local \
-  ts-ai-dev
+docker compose up -d db
+```
+Then run the dev container separately:
+```bash
+docker run --rm -p 3000:3000 --env POSTGRES_HOST=host.docker.internal --env-file .env.local ts-ai-dev sh -lc "pnpm exec nx run spacetraders-service:serve"
+docker run --rm -p 4200:4200 --env-file .env.local ts-ai-dev sh -lc "pnpm exec nx run create-agent-ui:dev"
 ```
 
 ## Notes
 - `.dockerignore` keeps image size and context small.
-- The Dockerfile uses `pnpm fetch` for deterministic, cached deps installation.
+- The Dockerfile installs with `--frozen-lockfile` to ensure versions match `pnpm-lock.yaml`.
 - Stop the container with Ctrl+C (or `docker rm -f <container>` if detached).

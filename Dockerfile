@@ -23,5 +23,3 @@ EXPOSE 4200 3000
 
 # Default command: run both apps (Next dev + Nest serve)
 CMD ["sh","-lc","pnpm exec nx run spacetraders-service:serve & pnpm exec nx run spacetraders-ui:dev"]
-
-
