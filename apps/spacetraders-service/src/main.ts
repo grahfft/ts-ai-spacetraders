@@ -19,8 +19,9 @@ async function bootstrap() {
   } else {
     loadEnv();
   }
-  const app = await NestFactory.create(AppModule);
+  // Initialize CLS namespace BEFORE Nest app creation so @Transactional() works during module instantiation
   initializeTransactionalContext();
+  const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin: [
       /^(http|https):\/\/localhost(?::\d+)?$/,
