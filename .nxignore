@@ -1,0 +1,7 @@
+# Ignore generated build artifacts from Nx project graph/inference
+**/.next/**
+.next
+/dist/**
+dist/**
+coverage/**
+tmp/**

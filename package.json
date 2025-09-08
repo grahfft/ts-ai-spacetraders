@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "nx run-many -t build --all --exclude=ts-ai-spactraders",
-    "start": "nx serve create-agent-ui",
-    "test": "nx run-many -t test --projects=create-agent,chakra-provider",
-    "lint": "nx run-many -t lint --projects=create-agent-ui,create-agent,chakra-provider,api"
+    "start": "nx serve spacetraders-ui",
+    "test": "nx run-many -t test --projects=create-agent,chakra-provider,api",
+    "lint": "nx run-many -t lint --projects=spacetraders-ui,create-agent,chakra-provider,api"
   },
   "keywords": [
     "typescript",
@@ -86,9 +86,13 @@
     "@emotion/styled": "^11.14.1",
     "@module-federation/enhanced": "^0.18.0",
     "@nestjs/common": "^11.0.0",
+    "@nestjs/typeorm": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
     "axios": "^1.11.0",
+    "pg": "^8.12.0",
+    "typeorm": "^0.3.20",
+    "typeorm-transactional": "^0.4.0",
     "dotenv": "^16.6.1",
     "framer-motion": "^10.18.0",
     "next": "~15.2.4",

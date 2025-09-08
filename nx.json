@@ -14,7 +14,8 @@
           "buildDepsName": "build-deps",
           "watchDepsName": "watch-deps"
         }
-      }
+      },
+      "exclude": ["**/.next/**", "**/dist/**", "**/coverage/**", "**/tmp/**"]
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -62,7 +63,8 @@
         "serveStaticTargetName": "serve-static",
         "buildDepsTargetName": "build-deps",
         "watchDepsTargetName": "watch-deps"
-      }
+      },
+      "exclude": ["**/.next/**", "**/dist/**", "**/coverage/**", "**/tmp/**"]
     },
     {
       "plugin": "@nx/webpack/plugin",
