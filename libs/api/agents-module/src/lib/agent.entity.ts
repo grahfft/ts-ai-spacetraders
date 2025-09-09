@@ -16,7 +16,7 @@ export class Agent {
   email?: string | null;
 
   @Index()
-  @Column({ type: 'varchar', length: 128, nullable: true })
+  @Column({ type: 'varchar', length: 64, nullable: true })
   accountTokenHash?: string | null;
 
   @Column({ type: 'text', nullable: true })
