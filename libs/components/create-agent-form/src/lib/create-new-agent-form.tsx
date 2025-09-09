@@ -15,11 +15,15 @@ import axios from 'axios';
 export interface CreateNewAgentFormProps {
   defaultSymbol?: string;
   defaultFaction?: string;
+  showTokenFields?: boolean;
+  onSuccess?: (args: { symbol: string; faction: string }) => void;
 }
 
 export function CreateNewAgentForm({
   defaultSymbol = 'TSAI',
   defaultFaction = 'COSMIC',
+  showTokenFields = false,
+  onSuccess,
 }: CreateNewAgentFormProps) {
   const [symbol, setSymbol] = useState(defaultSymbol);
   const [faction, setFaction] = useState(defaultFaction);
@@ -39,10 +43,8 @@ export function CreateNewAgentForm({
     setLoading(true);
     setError(null);
     try {
-      const serviceBase = process.env.NEXT_PUBLIC_SERVICE_URL;
-      const url = serviceBase
-        ? `${serviceBase.replace(/\/$/, '')}/api/agents/register`
-        : '/api/create-new-agent';
+      const base = (process.env.NEXT_PUBLIC_SERVICE_URL || process.env.SERVICE_URL)?.replace(/\/$/, '');
+      const url = base ? `${base}/agents/register` : '/api/create-new-agent';
       const { data } = await axios.post(url, {
         symbol,
         faction,
@@ -51,6 +53,7 @@ export function CreateNewAgentForm({
       const tokenValue = data?.data?.token ?? data?.token ?? null;
       setToken(tokenValue);
       if (tokenValue) localStorage.setItem('SPACE_TRADERS_TOKEN', tokenValue);
+      if (onSuccess) onSuccess({ symbol, faction });
     } catch (err) {
       const unknownError = err as { response?: { data?: { error?: { message?: string } } }; message?: string };
       setError(
@@ -68,27 +71,31 @@ export function CreateNewAgentForm({
       <Heading size="md" mb={4}>
         Create New Agent
       </Heading>
-      <Text mb={4}>
-        Use an account token to authorize registering new agents. Token is
-        stored locally only.
-      </Text>
-      <FormControl mb={4}>
-        <FormLabel>Account Token (not stored in repo)</FormLabel>
-        <Textarea
-          rows={2}
-          value={accountToken}
-          onChange={(e) => setAccountToken(e.target.value)}
-          placeholder="Paste your account token"
-        />
-        <Button
-          mt={2}
-          onClick={() =>
-            localStorage.setItem('SPACE_TRADERS_ACCOUNT_TOKEN', accountToken)
-          }
-        >
-          Save Account Token
-        </Button>
-      </FormControl>
+      {showTokenFields && (
+        <>
+          <Text mb={4}>
+            Use an account token to authorize registering new agents. Token is
+            stored locally only.
+          </Text>
+          <FormControl mb={4}>
+            <FormLabel>Account Token (not stored in repo)</FormLabel>
+            <Textarea
+              rows={2}
+              value={accountToken}
+              onChange={(e) => setAccountToken(e.target.value)}
+              placeholder="Paste your account token"
+            />
+            <Button
+              mt={2}
+              onClick={() =>
+                localStorage.setItem('SPACE_TRADERS_ACCOUNT_TOKEN', accountToken)
+              }
+            >
+              Save Account Token
+            </Button>
+          </FormControl>
+        </>
+      )}
 
       <Box as="form" onSubmit={onSubmit}>
         <Stack spacing={4}>
@@ -125,23 +132,25 @@ export function CreateNewAgentForm({
         </Stack>
       </Box>
 
-      <Box mt={6}>
-        <FormControl>
-          <FormLabel>Paste Existing Token</FormLabel>
-          <Textarea
-            rows={3}
-            value={token ?? ''}
-            onChange={(e) => setToken(e.target.value)}
-            placeholder="Paste your token here"
-          />
-        </FormControl>
-        <Button
-          mt={2}
-          onClick={() => token && localStorage.setItem('SPACE_TRADERS_TOKEN', token)}
-        >
-          Save Token
-        </Button>
-      </Box>
+      {showTokenFields && (
+        <Box mt={6}>
+          <FormControl>
+            <FormLabel>Paste Existing Token</FormLabel>
+            <Textarea
+              rows={3}
+              value={token ?? ''}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder="Paste your token here"
+            />
+          </FormControl>
+          <Button
+            mt={2}
+            onClick={() => token && localStorage.setItem('SPACE_TRADERS_TOKEN', token)}
+          >
+            Save Token
+          </Button>
+        </Box>
+      )}
 
       {error && (
         <Text color="red.500" mt={4}>
