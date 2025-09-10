@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './page.module.css';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Heading, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import axios from 'axios';
 import { AgentsTable } from '@spacetraders/agents-table';

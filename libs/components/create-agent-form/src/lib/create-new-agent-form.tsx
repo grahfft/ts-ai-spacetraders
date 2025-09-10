@@ -53,7 +53,13 @@ export function CreateNewAgentForm({
       const tokenValue = data?.data?.token ?? data?.token ?? null;
       setToken(tokenValue);
       if (tokenValue) localStorage.setItem('SPACE_TRADERS_TOKEN', tokenValue);
+      // If backend returns the created agent record or id, navigate after success
+      const createdId = data?.id ?? data?.agent?.id ?? null;
       if (onSuccess) onSuccess({ symbol, faction });
+      if (createdId && typeof window !== 'undefined') {
+        // best-effort navigation to details page
+        try { window.location.assign(`/agent/${createdId}`); } catch (err) { console.warn('Navigation failed', err); }
+      }
     } catch (err) {
       const unknownError = err as { response?: { data?: { error?: { message?: string } } }; message?: string };
       setError(
