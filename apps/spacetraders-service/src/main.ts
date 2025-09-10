@@ -8,7 +8,8 @@ import { config as loadEnv } from 'dotenv';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { NestFactory } from '@nestjs/core';
-import { initializeTransactionalContext } from 'typeorm-transactional';
+import { initializeTransactionalContext, addTransactionalDataSource } from 'typeorm-transactional';
+import { DataSource } from 'typeorm';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
@@ -22,8 +23,15 @@ async function bootstrap() {
   // Initialize CLS namespace BEFORE Nest app creation so @Transactional() works during module instantiation
   initializeTransactionalContext();
   const app = await NestFactory.create(AppModule);
+  // Register TypeORM DataSource with transactional context
+  const dataSource = app.get(DataSource);
+  addTransactionalDataSource(dataSource);
+  const corsOrigins = (process.env['CORS_ORIGINS'] || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin: [
+    origin: corsOrigins.length ? corsOrigins : [
       /^(http|https):\/\/localhost(?::\d+)?$/,
       /^(http|https):\/\/127\.0\.0\.1(?::\d+)?$/
     ],

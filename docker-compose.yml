@@ -41,6 +41,7 @@ services:
     env_file: .env.local
     environment:
       NX_DAEMON: 'false'
+      SERVICE_URL: ${SERVICE_URL:-http://api:3000/api}
     ports:
       - "4200:4200"
     command: sh -lc "rm -rf apps/spacetraders-ui/.next && pnpm exec nx run spacetraders-ui:dev"

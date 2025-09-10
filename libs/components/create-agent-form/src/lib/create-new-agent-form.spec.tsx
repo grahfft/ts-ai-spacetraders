@@ -33,11 +33,11 @@ describe('CreateNewAgentForm', () => {
     fireEvent.click(screen.getByRole('button', { name: /register/i }));
 
     await waitFor(() => {
-      expect(mockedAxios.post).toHaveBeenCalledWith('/api/create-new-agent', {
-        symbol: 'ABC',
-        faction: 'COSMIC',
-        email: '',
-      });
+      // Accept either direct service URL or Next API route depending on env
+      const calledWith = (mockedAxios.post as jest.Mock).mock.calls[0][0];
+      expect(calledWith === '/api/create-new-agent' || calledWith.endsWith('/agents/register')).toBe(true);
+      const body = (mockedAxios.post as jest.Mock).mock.calls[0][1];
+      expect(body).toEqual({ symbol: 'ABC', faction: 'COSMIC', email: '' });
     });
 
     expect(localStorage.setItem).toHaveBeenCalledWith('SPACE_TRADERS_TOKEN', 'T123');
