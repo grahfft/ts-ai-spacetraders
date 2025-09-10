@@ -1,0 +1,39 @@
+{
+  "name": "agents-table",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/components/agents-table/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:components"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/components/agents-table",
+        "main": "libs/components/agents-table/src/index.ts",
+        "tsConfig": "libs/components/agents-table/tsconfig.lib.json",
+        "assets": ["libs/components/agents-table/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/agents-table/**/*.ts",
+          "libs/components/agents-table/**/*.tsx"
+        ],
+        "fix": true,
+        "ignorePath": ".eslintignore"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/components/agents-table/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
+
+
