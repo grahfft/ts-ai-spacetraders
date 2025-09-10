@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td, TableContainer } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Skeleton, Link as ChakraLink } from '@chakra-ui/react';
+import Link from 'next/link';
 
 export interface AgentRow {
   id: string;
@@ -26,7 +27,12 @@ export function AgentsTable({ agents, loading = false }: AgentsTableProps) {
           {agents.map((a) => (
             <Tr key={a.id}>
               <Td>{a.symbol}</Td>
-              <Td>{a.faction ?? '-'}</Td>
+              <Td>
+                {a.faction ?? '-'}{' '}
+                <ChakraLink as={Link} href={`/agent/${a.id}`} color="teal.500" ml={4}>
+                  Details
+                </ChakraLink>
+              </Td>
             </Tr>
           ))}
           {!loading && agents.length === 0 && (

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AgentsService } from './agents.service';
 import { RegisterAgentInput } from './register-agent';
 
@@ -23,6 +23,16 @@ export class AgentsController {
   @Post('register')
   async createRegister(@Body() body: RegisterAgentInput) {
     return this.agentsService.registerAgent(body);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.agentsService.findById(id);
+  }
+
+  @Get(':id/summary')
+  async summary(@Param('id') id: string) {
+    return this.agentsService.fetchAgentSummary(id);
   }
 }
 
