@@ -6,6 +6,10 @@ export class Agent {
   id!: string;
 
   @Index({ unique: true })
+  @Column({ type: 'varchar', length: 64, nullable: true })
+  publicKey?: string | null;
+
+  @Index({ unique: true })
   @Column({ type: 'varchar', length: 64 })
   symbol!: string;
 
