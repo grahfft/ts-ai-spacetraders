@@ -1,6 +1,7 @@
 import { AgentsService as CreateAgentService } from './agents.service';
 import { Repository } from 'typeorm';
 import axios from 'axios';
+import { createHash } from 'crypto';
 
 jest.mock('axios');
 jest.mock('typeorm-transactional', () => ({
@@ -37,7 +38,7 @@ describe('CreateAgentService', () => {
       expect.objectContaining({
         symbol: 'S',
         tokenEncoded: Buffer.from('AGENT_TOKEN').toString('base64'),
-        accountTokenHash: Buffer.from('ACCOUNT_TOKEN').toString('base64'),
+        accountTokenHash: createHash('sha256').update('ACCOUNT_TOKEN').digest('hex'),
       })
     );
     expect((repo as any).save).toHaveBeenCalled();

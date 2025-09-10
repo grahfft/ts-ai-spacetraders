@@ -3,17 +3,20 @@ import { AgentsController } from './agents.controller';
 import { AgentsService } from './agents.service';
 
 describe('AgentsController', () => {
-  it('returns [] when header missing', async () => {
+  it('returns [] when env token missing', async () => {
+    const original = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
+    delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
     const module = await Test.createTestingModule({
       controllers: [AgentsController],
       providers: [{ provide: AgentsService, useValue: { listAgentsByAccountTokenHash: jest.fn() } }],
     }).compile();
     const controller = module.get(AgentsController);
-    const res = await controller.list(undefined as any);
+    const res = await controller.list();
     expect(res).toEqual([]);
+    if (original) process.env['SPACE_TRADERS_ACCOUNT_TOKEN'] = original;
   });
 
-  it('returns service results when header provided', async () => {
+  it('returns service results when env token set', async () => {
     const module = await Test.createTestingModule({
       controllers: [AgentsController],
       providers: [{
@@ -22,7 +25,22 @@ describe('AgentsController', () => {
       }],
     }).compile();
     const controller = module.get(AgentsController);
-    const res = await controller.list('token');
+    const res = await controller.list();
     expect(res).toEqual([{ symbol: 'A' }]);
+  });
+
+  it('uses env token', async () => {
+    const original = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
+    process.env['SPACE_TRADERS_ACCOUNT_TOKEN'] = 'env-token';
+    const mock = { listAgentsByAccountTokenHash: jest.fn().mockResolvedValue([{ symbol: 'B' }]) };
+    const module = await Test.createTestingModule({
+      controllers: [AgentsController],
+      providers: [{ provide: AgentsService, useValue: mock }],
+    }).compile();
+    const controller = module.get(AgentsController);
+    const res = await controller.list();
+    expect(mock.listAgentsByAccountTokenHash).toHaveBeenCalledWith('env-token');
+    expect(res).toEqual([{ symbol: 'B' }]);
+    if (original) process.env['SPACE_TRADERS_ACCOUNT_TOKEN'] = original; else delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
   });
 });

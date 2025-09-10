@@ -26,5 +26,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"],
+  "references": []
 }

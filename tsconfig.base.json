@@ -12,9 +12,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "@spacetraders/api-agents": [
-        "libs/api/agents-module/src/index.ts"
+      "@spacetraders/agents-table": [
+        "libs/components/agents-table/src/index.ts"
       ],
+      "@spacetraders/api-agents": ["libs/api/agents-module/src/index.ts"],
       "@spacetraders/api-agents/register": [
         "libs/api/agents-module/src/lib/register-agent.ts"
       ],
@@ -23,8 +24,7 @@
       ],
       "@spacetraders/create-agent": [
         "libs/components/create-agent-form/src/index.ts"
-      ],
-      
+      ]
     }
   }
 }

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Agent } from './agent.entity';
 import { Transactional } from 'typeorm-transactional';
 import { registerAgent, RegisterAgentInput, RegisterAgentResponseData } from './register-agent';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class AgentsService {
@@ -20,7 +21,7 @@ export class AgentsService {
     const tokenValue = (data as any)?.data?.token ?? (data as any)?.token ?? null;
     if (tokenValue && accountToken) {
       const tokenEncoded = Buffer.from(String(tokenValue)).toString('base64');
-      const accountTokenHash = Buffer.from(String(accountToken)).toString('base64');
+      const accountTokenHash = createHash('sha256').update(String(accountToken)).digest('hex');
       const entity = this.agentRepo.create({ symbol, faction, email: email ?? null, tokenEncoded, accountTokenHash });
       await this.agentRepo.save(entity);
     }
@@ -29,7 +30,7 @@ export class AgentsService {
 
   @Transactional()
   async listAgentsByAccountTokenHash(accountToken: string): Promise<Agent[]> {
-    const accountTokenHash = Buffer.from(String(accountToken)).toString('base64');
+    const accountTokenHash = createHash('sha256').update(String(accountToken)).digest('hex');
     return this.agentRepo.find({ where: { accountTokenHash } });
   }
 }
