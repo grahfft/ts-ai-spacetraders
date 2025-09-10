@@ -9,9 +9,5 @@
     "target": "es2021"
   },
   "include": ["src/**/*.ts"],
-  "references": [
-    {
-      "path": "../../libs/api/agents-module"
-    }
-  ]
+  "references": []
 }
