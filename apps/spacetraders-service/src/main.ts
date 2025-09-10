@@ -36,7 +36,7 @@ async function bootstrap() {
       /^(http|https):\/\/127\.0\.0\.1(?::\d+)?$/
     ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-account-token'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
   });
   const globalPrefix = 'api';
