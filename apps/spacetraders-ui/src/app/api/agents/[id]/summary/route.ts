@@ -8,11 +8,12 @@ function resolveBase(): string | null {
   return base;
 }
 
-export async function GET(_req: Request, { params }: any) {
+export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   try {
     const base = resolveBase();
     if (!base) return NextResponse.json({ error: 'Service URL not configured' }, { status: 500 });
-    const res = await fetch(`${base}/agents/${params.id}/summary`, { cache: 'no-store' });
+    const { id } = await ctx.params;
+    const res = await fetch(`${base}/agents/${id}/summary`, { cache: 'no-store' });
     const contentType = res.headers.get('content-type') || '';
     if (!contentType.includes('application/json')) {
       const text = await res.text();

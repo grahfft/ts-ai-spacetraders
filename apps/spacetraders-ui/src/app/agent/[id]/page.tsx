@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState, use as usePromise } from 'react';
 import { Box, Heading, Stack, Text, Divider, Skeleton, Button } from '@chakra-ui/react';
+import Link from 'next/link';
 
 interface AgentDto { id: string; symbol: string; faction?: string | null }
 
-export default function AgentPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = usePromise(params);
+export default function AgentPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = usePromise(props.params);
   const [agent, setAgent] = useState<AgentDto | null>(null);
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,10 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
 
   return (
     <Box maxW="900px" mx="auto" py={6}>
-      <Heading size="lg" mb={4}>Agent Summary</Heading>
+      <Box display="flex" alignItems="center" justifyContent="space-between" mb={4}>
+        <Heading size="lg">Agent Summary</Heading>
+        <Button as={Link} href="/" variant="outline" size="sm">Back to Agents</Button>
+      </Box>
 
       {error && (
         <Box bg="red.50" borderWidth="1px" borderColor="red.200" p={3} mb={4} borderRadius="md">
