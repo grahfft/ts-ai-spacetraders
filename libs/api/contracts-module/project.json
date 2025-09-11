@@ -1,0 +1,36 @@
+{
+  "name": "contracts-module",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/contracts-module/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:api"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/contracts-module",
+        "main": "libs/api/contracts-module/src/index.ts",
+        "tsConfig": "libs/api/contracts-module/tsconfig.lib.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/api/contracts-module/**/*.ts"
+        ],
+        "fix": true,
+        "ignorePath": ".eslintignore"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/api/contracts-module/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
+

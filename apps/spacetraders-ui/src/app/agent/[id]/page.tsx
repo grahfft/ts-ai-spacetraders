@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, use as usePromise } from 'react';
 import { Box, Heading, Stack, Text, Divider, Skeleton, Button, Flex } from '@chakra-ui/react';
-import Link from 'next/link';
+import { SidebarNav, ContractsList } from '@spacetraders/agent-ui';
 
 interface AgentDto { id: string; symbol: string; faction?: string | null }
 
@@ -66,13 +66,7 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
 
   return (
     <Flex maxW="1100px" mx="auto" py={6} gap={6}>
-      <Box as="nav" w="220px" flexShrink={0}>
-        <Stack spacing={2}>
-          <Button variant={section === 'summary' ? 'solid' : 'outline'} onClick={() => setSection('summary')} size="sm">Summary</Button>
-          <Button variant={section === 'contracts' ? 'solid' : 'outline'} onClick={() => setSection('contracts')} size="sm">Contracts</Button>
-          <Button as={Link} href="/" variant="ghost" size="sm">Back to Agents</Button>
-        </Stack>
-      </Box>
+      <SidebarNav active={section} onChange={setSection} />
       <Box flex="1">
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={4}>
           <Heading size="lg">Agent</Heading>
@@ -124,101 +118,28 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
 
             <Divider my={4} />
             <Heading size="md" mb={2}>Contracts</Heading>
-            {loading ? (
-              <>
-                <Skeleton height="18px" width="70%" />
-                <Skeleton height="18px" width="70%" />
-              </>
-            ) : Array.isArray(contracts) && contracts.length > 0 ? (
-              <Stack spacing={2}>
-                {contracts.map((c: any) => (
-                  <Box key={c.id} borderWidth="1px" borderRadius="md" p={3}>
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                      <Box>
-                        <Text><b>Type:</b> {c.type}</Text>
-                        <Text><b>Deadline:</b> {c.terms?.deadline ?? '-'}</Text>
-                      </Box>
-                      <Box>
-                        <Button
-                          size="sm"
-                          colorScheme="teal"
-                          isDisabled={c.accepted}
-                          isLoading={!!accepting[c.id]}
-                          onClick={() => acceptContract(c.id)}
-                        >
-                          {c.accepted ? 'Accepted' : 'Accept'}
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Box>
-                ))}
-              </Stack>
-            ) : (
-              <Text>No contracts found.</Text>
-            )}
+            <ContractsList
+              loading={loading}
+              contracts={contracts}
+              expanded={expanded}
+              accepting={accepting}
+              onToggleExpand={onToggleExpand}
+              onAccept={(cid) => { void acceptContract(cid); }}
+            />
           </>
         )}
 
         {section === 'contracts' && (
           <>
             <Heading size="md" mb={3}>Contracts</Heading>
-            {loading ? (
-              <>
-                <Skeleton height="18px" width="70%" />
-                <Skeleton height="18px" width="70%" />
-                <Skeleton height="18px" width="50%" />
-              </>
-            ) : Array.isArray(contracts) && contracts.length > 0 ? (
-              <Stack spacing={3}>
-                {contracts.map((c: any) => {
-                  const isOpen = !!expanded[c.id];
-                  return (
-                    <Box key={c.id} borderWidth="1px" borderRadius="md" p={3}>
-                      <Box display="flex" alignItems="center" justifyContent="space-between" onClick={() => onToggleExpand(c.id)} cursor="pointer">
-                        <Box>
-                          <Text fontWeight="semibold">{c.type}</Text>
-                          <Text fontSize="sm" color="gray.600">Deadline: {c.terms?.deadline ?? '-'}</Text>
-                        </Box>
-                        <Box>
-                          <Button
-                            size="sm"
-                            colorScheme="teal"
-                            isDisabled={c.accepted}
-                            isLoading={!!accepting[c.id]}
-                            onClick={(e) => { e.stopPropagation(); void acceptContract(c.id); }}
-                          >
-                            {c.accepted ? 'Accepted' : 'Accept'}
-                          </Button>
-                        </Box>
-                      </Box>
-                      {isOpen && (
-                        <Box mt={3}>
-                          <Divider mb={3} />
-                          <Text><b>Accepted:</b> {String(c.accepted)}</Text>
-                          <Text><b>Faction:</b> {c.factionSymbol ?? '-'}</Text>
-                          <Text><b>On Accepted:</b> {c.onAccepted?.message ?? '-'}</Text>
-                          <Text><b>Terms:</b> {c.terms?.deadline ?? '-'}</Text>
-                          {c.terms?.deliver && Array.isArray(c.terms.deliver) && (
-                            <Box mt={2}>
-                              <Text fontWeight="semibold">Deliveries:</Text>
-                              <Stack spacing={1} mt={1}>
-                                {c.terms.deliver.map((d: any, idx: number) => (
-                                  <Text key={idx} fontSize="sm">
-                                    {d.unitsRequired}x {d.tradeSymbol} to {d.destinationSymbol} (accepted: {d.unitsFulfilled ?? 0})
-                                  </Text>
-                                ))}
-                              </Stack>
-                            </Box>
-                          )}
-                        </Box>
-                      )}
-                    </Box>
-                  );
-                })}
-              </Stack>
-            ) : (
-              <Text>No contracts found.</Text>
-            )}
+            <ContractsList
+              loading={loading}
+              contracts={contracts}
+              expanded={expanded}
+              accepting={accepting}
+              onToggleExpand={onToggleExpand}
+              onAccept={(cid) => { void acceptContract(cid); }}
+            />
           </>
         )}
       </Box>

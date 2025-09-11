@@ -35,13 +35,7 @@ export class AgentsController {
     return this.agentsService.fetchAgentSummary(id);
   }
 
-  @Post(':id/contracts/:contractId/accept')
-  async accept(
-    @Param('id') id: string,
-    @Param('contractId') contractId: string
-  ) {
-    return this.agentsService.acceptContract(id, contractId);
-  }
+  // contracts endpoints moved to ContractsController
 }
 
 

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AgentsModule } from '@spacetraders/api-agents';
+import { ContractsModule } from '@spacetraders/contracts-module';
 import { Agent } from '@spacetraders/api-agents';
 
 @Module({
@@ -16,6 +17,7 @@ import { Agent } from '@spacetraders/api-agents';
       synchronize: true,
     }),
     AgentsModule,
+    ContractsModule,
   ],
   controllers: [],
   providers: [],
