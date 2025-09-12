@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Agent } from '@spacetraders/api-agents';
@@ -8,7 +9,8 @@ import { Agent } from '@spacetraders/api-agents';
 export class ContractsService {
   constructor(
     @InjectRepository(Agent)
-    private readonly agentRepo: Repository<Agent>
+    private readonly agentRepo: Repository<Agent>,
+    @Inject('SPACETRADERS_HTTP') private readonly http: ReturnType<typeof axios.create>
   ) {}
 
   async acceptContract(agentId: string, contractId: string): Promise<any> {
@@ -18,9 +20,7 @@ export class ContractsService {
     const token = agent.tokenEncoded ? Buffer.from(agent.tokenEncoded, 'base64').toString('utf-8') : accountToken;
     if (!token) return { agent, error: 'No token available to accept contract' };
     const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } as const;
-    const baseURL = process.env['SPACE_TRADERS_API_BASE_URL'] || 'https://api.spacetraders.io/v2';
-    const client = axios.create({ baseURL, headers });
-    const res = await client.post(`/my/contracts/${contractId}/accept`, {});
+    const res = await this.http.post(`/my/contracts/${contractId}/accept`, {}, { headers });
     return res.data ?? { ok: res.status >= 200 && res.status < 300 };
   }
 }

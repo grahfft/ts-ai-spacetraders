@@ -8,4 +8,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/components/agent-ui',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 };
