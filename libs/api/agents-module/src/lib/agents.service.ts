@@ -56,8 +56,6 @@ export class AgentsService {
     ]);
     return { agent, myAgent: myAgentRes.data, myContracts: myContractsRes.data };
   }
-
-  // moved to ContractsService
 }
 
 

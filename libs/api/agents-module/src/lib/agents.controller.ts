@@ -34,8 +34,6 @@ export class AgentsController {
   async summary(@Param('id') id: string) {
     return this.agentsService.fetchAgentSummary(id);
   }
-
-  // contracts endpoints moved to ContractsController
 }
 
 
