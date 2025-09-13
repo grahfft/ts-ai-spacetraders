@@ -89,15 +89,9 @@
     "@emotion/styled": "^11.14.1",
     "@module-federation/enhanced": "^0.18.0",
     "@nestjs/common": "^11.0.0",
-<<<<<<< HEAD
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
     "@nestjs/typeorm": "^11.0.0",
-=======
-    "@nestjs/typeorm": "^11.0.0",
-    "@nestjs/core": "^11.0.0",
-    "@nestjs/platform-express": "^11.0.0",
->>>>>>> main
     "axios": "^1.11.0",
     "pg": "^8.12.0",
     "typeorm": "^0.3.20",

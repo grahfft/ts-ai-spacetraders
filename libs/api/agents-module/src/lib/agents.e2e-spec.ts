@@ -6,6 +6,11 @@ import { AgentsModule } from '../index';
 import { Agent } from './agent.entity';
 import axios from 'axios';
 
+/*
+  test-only file; excluded from library build via tsconfig.lib.json
+  eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  @ts-nocheck
+*/
 jest.mock('axios');
 
 describe('Agents e2e (Register → Summary)', () => {
