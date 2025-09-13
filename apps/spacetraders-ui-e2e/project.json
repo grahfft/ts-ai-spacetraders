@@ -1,0 +1,17 @@
+{
+  "name": "spacetraders-ui-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/spacetraders-ui-e2e",
+  "projectType": "application",
+  "tags": ["type:e2e", "scope:ui"],
+  "targets": {
+    "e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "playwright test",
+        "cwd": "apps/spacetraders-ui-e2e"
+      }
+    }
+  }
+}
+

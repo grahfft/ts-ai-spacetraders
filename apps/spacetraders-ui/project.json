@@ -41,6 +41,13 @@
         "fix": true,
         "ignorePath": ".eslintignore"
       }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "apps/spacetraders-ui/jest.config.ts",
+        "passWithNoTests": true
+      }
     }
   }
 }

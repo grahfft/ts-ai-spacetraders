@@ -1,4 +1,4 @@
-import { AgentsService as CreateAgentService } from './agents.service';
+import { AgentsService } from './agents.service';
 import { Repository } from 'typeorm';
 import axios from 'axios';
 import { createHash } from 'crypto';
@@ -17,7 +17,7 @@ function repoMock() {
   } as unknown as Repository<any>;
 }
 
-describe('CreateAgentService', () => {
+describe('AgentsService.registerAgent (BDD)', () => {
   const prev = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
   beforeEach(() => {
     process.env['SPACE_TRADERS_ACCOUNT_TOKEN'] = 'ACCOUNT_TOKEN';
@@ -30,9 +30,9 @@ describe('CreateAgentService', () => {
     else delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
   });
 
-  it('saves agent with encoded token and accountTokenHash', async () => {
+  it('Given server token is set, When registering, Then it saves agent with encoded token and sha256 hash', async () => {
     const repo = repoMock();
-    const svc = new CreateAgentService(repo as any);
+    const svc = new AgentsService(repo as any);
     await svc.registerAgent({ symbol: 'S', faction: 'F' });
     expect((repo as any).create).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -42,5 +42,15 @@ describe('CreateAgentService', () => {
       })
     );
     expect((repo as any).save).toHaveBeenCalled();
+  });
+
+  it('Given server token is missing, When registering, Then it throws a helpful error', async () => {
+    delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
+    const repo = repoMock();
+    const svc = new AgentsService(repo as any);
+    await expect(svc.registerAgent({ symbol: 'S', faction: 'F' })).rejects.toThrow(
+      /Missing SPACE_TRADERS_ACCOUNT_TOKEN/i
+    );
+    expect((repo as any).save).not.toHaveBeenCalled();
   });
 });

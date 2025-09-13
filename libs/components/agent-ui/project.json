@@ -1,0 +1,37 @@
+{
+  "name": "agent-ui",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/components/agent-ui/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:components"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/components/agent-ui",
+        "main": "libs/components/agent-ui/src/index.ts",
+        "tsConfig": "libs/components/agent-ui/tsconfig.lib.json",
+        "assets": ["libs/components/agent-ui/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/components/agent-ui/**/*.ts",
+          "libs/components/agent-ui/**/*.tsx"
+        ],
+        "fix": true,
+        "ignorePath": ".eslintignore"
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "libs/components/agent-ui/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
