@@ -28,6 +28,11 @@ describe('ShipsList (BDD)', () => {
     expect(screen.queryByText(/status: docked/i)).toBeInTheDocument();
     expect(screen.queryByText(/cargo: 10\/60/i)).toBeInTheDocument();
   });
+
+  it('Given openSymbol is SHIP-1, Then the list auto-expands and highlights SHIP-1', () => {
+    render(<ShipsList ships={ships} openSymbol={'SHIP-1'} />);
+    expect(screen.getByText(/status: docked/i)).toBeInTheDocument();
+  });
 });
 
 

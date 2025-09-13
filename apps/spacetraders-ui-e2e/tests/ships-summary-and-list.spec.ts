@@ -11,9 +11,7 @@ test('Ships: quick cards on summary and expandable details in Ships section', as
   await details.openShips();
   await expect(page.getByRole('heading', { name: /ships/i })).toBeVisible();
   const anyShip = page.getByText(/ship-/i).first();
-  if (await anyShip.isVisible()) {
-    await anyShip.click();
-  }
+  await anyShip.click();
 });
 
 

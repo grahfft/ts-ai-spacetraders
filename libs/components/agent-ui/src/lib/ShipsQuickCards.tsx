@@ -15,6 +15,8 @@ export function ShipsQuickCards({ ships, onSelectShip }: { ships: ShipSummary[];
             minW="160px"
             cursor={onSelectShip ? 'pointer' : 'default'}
             onClick={() => onSelectShip?.(s.symbol)}
+            data-testid={`ship-card-${s.symbol}`}
+            data-symbol={s.symbol}
           >
             <Text fontWeight="semibold">{s.symbol}</Text>
             <Text fontSize="sm" color="gray.600">{s.role ?? '-'}</Text>

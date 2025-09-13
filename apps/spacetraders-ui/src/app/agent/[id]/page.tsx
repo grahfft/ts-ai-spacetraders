@@ -2,23 +2,21 @@
 
 import React, { useEffect, useState, use as usePromise } from 'react';
 import { Box, Heading, Stack, Text, Divider, Skeleton, Button, Flex } from '@chakra-ui/react';
-import { SidebarNav, ContractsList, ShipsQuickCards, ShipsList } from '@spacetraders/agent-ui';
+import { SidebarNav, ContractsList, ShipsQuickCards, ShipsList, AgentDetailsProvider, useAgentDetails } from '@spacetraders/agent-ui';
 import { useSearchParams } from 'next/navigation';
 
 interface AgentDto { id: string; symbol: string; faction?: string | null }
 
-export default function AgentPage(props: { params: Promise<{ id: string }> }) {
-  const { id } = usePromise(props.params);
+function AgentPageInner({ id }: { id: string }) {
   const searchParams = useSearchParams();
   const [agent, setAgent] = useState<AgentDto | null>(null);
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [section, setSection] = useState<'summary' | 'contracts' | 'ships'>('summary');
+  const { section, setSection, openShipSymbol, requestOpenShip, consumeOpenShip } = useAgentDetails();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [accepting, setAccepting] = useState<Record<string, boolean>>({});
   const [ships, setShips] = useState<any[]>([]);
-  const [pendingOpenShip, setPendingOpenShip] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -57,18 +55,19 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
   useEffect(() => {
     const qp = searchParams?.get('ship') || searchParams?.get('openShip');
     if (qp) {
-      setPendingOpenShip(qp);
-      setSection('ships');
+      requestOpenShip(qp);
     }
-  }, [searchParams]);
+  }, [searchParams, requestOpenShip]);
 
   // When Ships tab is active and data loaded, expand/highlight pending ship
   useEffect(() => {
-    if (section === 'ships' && !loading && pendingOpenShip) {
-      window.dispatchEvent(new CustomEvent('open-ship', { detail: { symbol: pendingOpenShip } }));
-      setPendingOpenShip(null);
+    if (section === 'ships' && !loading && openShipSymbol) {
+      // ships list will react to openShipSymbol prop
+      // consume after render cycle
+      const t = setTimeout(() => consumeOpenShip(), 0);
+      return () => clearTimeout(t);
     }
-  }, [section, loading, pendingOpenShip]);
+  }, [section, loading, openShipSymbol, consumeOpenShip]);
 
   const myAgent = summary?.myAgent?.data ?? summary?.myAgent ?? null;
   const contracts = summary?.myContracts?.data ?? [];
@@ -153,13 +152,7 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
                 <Skeleton height="18px" width="40%" />
               </>
             ) : (
-              <ShipsQuickCards
-                ships={ships}
-                onSelectShip={(symbol) => {
-                  setPendingOpenShip(symbol);
-                  setSection('ships');
-                }}
-              />
+              <ShipsQuickCards ships={ships} onSelectShip={(symbol) => { requestOpenShip(symbol); }} />
             )}
 
             <Divider my={4} />
@@ -199,11 +192,20 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
                 <Skeleton height="18px" width="30%" />
               </>
             ) : (
-              <ShipsList ships={ships} />
+              <ShipsList ships={ships} openSymbol={openShipSymbol} />
             )}
           </>
         )}
       </Box>
     </Flex>
+  );
+}
+
+export default function AgentPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = usePromise(props.params);
+  return (
+    <AgentDetailsProvider>
+      <AgentPageInner id={id} />
+    </AgentDetailsProvider>
   );
 }

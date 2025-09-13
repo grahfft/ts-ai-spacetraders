@@ -12,39 +12,28 @@ export interface Ship {
   cargo?: { units?: number; capacity?: number };
 }
 
-type OpenShipEvent = CustomEvent<{ symbol: string }>;
-interface GlobalWithEvents {
-  addEventListener?: (type: string, listener: (e: Event) => void) => void;
-  removeEventListener?: (type: string, listener: (e: Event) => void) => void;
-}
-
-export function ShipsList({ ships }: { ships: Ship[] }) {
+export function ShipsList({ ships, openSymbol }: { ships: Ship[]; openSymbol?: string | null }) {
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [highlighted, setHighlighted] = useState<Record<string, boolean>>({});
   const shipElementBySymbolRef = useRef<Record<string, HTMLDivElement | null>>({});
   useEffect(() => {
-    const g = globalThis as unknown as GlobalWithEvents;
-    if (typeof globalThis === 'undefined' || !g.addEventListener) return;
-    const onOpen = (e: Event) => {
-      const ce = e as OpenShipEvent;
-      const symbol = ce?.detail?.symbol;
-      if (symbol) {
-        setOpen((prev) => ({ ...prev, [symbol]: true }));
-        const el = shipElementBySymbolRef.current?.[symbol];
-        try {
-          el?.scrollIntoView?.({ behavior: 'smooth', block: 'center' });
-        } catch (err) {
-          // ignore: smooth scroll not supported in this environment
-        }
-        setHighlighted((prev) => ({ ...prev, [symbol]: true }));
-        setTimeout(() => {
-          setHighlighted((prev) => ({ ...prev, [symbol]: false }));
-        }, 1200);
+    const symbol = openSymbol;
+    if (!symbol) return;
+    setOpen((prev) => ({ ...prev, [symbol]: true }));
+    const el = shipElementBySymbolRef.current?.[symbol];
+    if (el && typeof (el as any).scrollIntoView === 'function') {
+      try {
+        (el as any).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (e) {
+        // no-op
       }
-    };
-    g.addEventListener('open-ship', onOpen);
-    return () => g.removeEventListener?.('open-ship', onOpen);
-  }, []);
+    }
+    setHighlighted((prev) => ({ ...prev, [symbol]: true }));
+    const t = setTimeout(() => {
+      setHighlighted((prev) => ({ ...prev, [symbol]: false }));
+    }, 1200);
+    return () => clearTimeout(t);
+  }, [openSymbol]);
   if (!Array.isArray(ships) || ships.length === 0) {
     return <Text>No ships found.</Text>;
   }
