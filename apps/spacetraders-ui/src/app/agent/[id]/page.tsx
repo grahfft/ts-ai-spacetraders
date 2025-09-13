@@ -2,32 +2,42 @@
 
 import React, { useEffect, useState, use as usePromise } from 'react';
 import { Box, Heading, Stack, Text, Divider, Skeleton, Button, Flex } from '@chakra-ui/react';
-import { SidebarNav, ContractsList } from '@spacetraders/agent-ui';
+import { SidebarNav, ContractsList, ShipsQuickCards, ShipsList, AgentDetailsProvider, useAgentDetails } from '@spacetraders/agent-ui';
+import { useSearchParams } from 'next/navigation';
 
 interface AgentDto { id: string; symbol: string; faction?: string | null }
 
-export default function AgentPage(props: { params: Promise<{ id: string }> }) {
-  const { id } = usePromise(props.params);
+function AgentPageInner({ id }: { id: string }) {
+  const searchParams = useSearchParams();
   const [agent, setAgent] = useState<AgentDto | null>(null);
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [section, setSection] = useState<'summary' | 'contracts'>('summary');
+  const { section, setSection, openShipSymbol, requestOpenShip, consumeOpenShip } = useAgentDetails();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [accepting, setAccepting] = useState<Record<string, boolean>>({});
+  const [ships, setShips] = useState<any[]>([]);
 
   const load = async () => {
     setLoading(true);
     setError(null);
     try {
-      const [agentRes, summaryRes] = await Promise.all([
+      const [agentRes, summaryRes, shipsRes] = await Promise.all([
         fetch(`/api/agents/${id}`, { cache: 'no-store' }),
         fetch(`/api/agents/${id}/summary`, { cache: 'no-store' }),
+        fetch(`/api/agents/${id}/ships`, { cache: 'no-store' }),
       ]);
       const agentJson = await agentRes.json();
       const summaryJson = await summaryRes.json();
+      const shipsJson = await shipsRes.json().catch(() => ({}));
       if (!agentRes.ok) throw new Error(agentJson?.error ?? 'Failed to load agent');
       if (!summaryRes.ok) throw new Error(summaryJson?.error ?? 'Failed to load summary');
+      if (!shipsRes.ok) {
+        // Non-fatal: ships failure should not block page
+        setShips([]);
+      } else {
+        setShips(Array.isArray(shipsJson?.ships) ? shipsJson.ships : []);
+      }
       setAgent(agentJson);
       setSummary(summaryJson);
     } catch (e: any) {
@@ -40,6 +50,24 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
   useEffect(() => {
     void load();
   }, [id]);
+
+  // URL query param trigger: ?ship=SYMBOL or ?openShip=SYMBOL
+  useEffect(() => {
+    const qp = searchParams?.get('ship') || searchParams?.get('openShip');
+    if (qp) {
+      requestOpenShip(qp);
+    }
+  }, [searchParams, requestOpenShip]);
+
+  // When Ships tab is active and data loaded, expand/highlight pending ship
+  useEffect(() => {
+    if (section === 'ships' && !loading && openShipSymbol) {
+      // ships list will react to openShipSymbol prop
+      // consume after render cycle
+      const t = setTimeout(() => consumeOpenShip(), 0);
+      return () => clearTimeout(t);
+    }
+  }, [section, loading, openShipSymbol, consumeOpenShip]);
 
   const myAgent = summary?.myAgent?.data ?? summary?.myAgent ?? null;
   const contracts = summary?.myContracts?.data ?? [];
@@ -117,6 +145,17 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
             )}
 
             <Divider my={4} />
+            <Heading size="md" mb={2}>Ships</Heading>
+            {loading ? (
+              <>
+                <Skeleton height="18px" width="50%" />
+                <Skeleton height="18px" width="40%" />
+              </>
+            ) : (
+              <ShipsQuickCards ships={ships} onSelectShip={(symbol) => { requestOpenShip(symbol); }} />
+            )}
+
+            <Divider my={4} />
             <Heading size="md" mb={2}>Contracts</Heading>
             <ContractsList
               loading={loading}
@@ -142,7 +181,31 @@ export default function AgentPage(props: { params: Promise<{ id: string }> }) {
             />
           </>
         )}
+
+        {section === 'ships' && (
+          <>
+            <Heading size="md" mb={3}>Ships</Heading>
+            {loading ? (
+              <>
+                <Skeleton height="18px" width="50%" />
+                <Skeleton height="18px" width="40%" />
+                <Skeleton height="18px" width="30%" />
+              </>
+            ) : (
+              <ShipsList ships={ships} openSymbol={openShipSymbol} />
+            )}
+          </>
+        )}
       </Box>
     </Flex>
+  );
+}
+
+export default function AgentPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = usePromise(props.params);
+  return (
+    <AgentDetailsProvider>
+      <AgentPageInner id={id} />
+    </AgentDetailsProvider>
   );
 }
