@@ -34,6 +34,11 @@ export class AgentsController {
   async summary(@Param('id') id: string) {
     return this.agentsService.fetchAgentSummary(id);
   }
+
+  @Get(':id/ships')
+  async ships(@Param('id') id: string) {
+    return this.agentsService.fetchAgentShips(id);
+  }
 }
 
 

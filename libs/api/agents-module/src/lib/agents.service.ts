@@ -56,6 +56,20 @@ export class AgentsService {
     ]);
     return { agent, myAgent: myAgentRes.data, myContracts: myContractsRes.data };
   }
+
+  async fetchAgentShips(id: string): Promise<any> {
+    const agent = await this.findById(id);
+    if (!agent) return { error: 'Not found' };
+    const accountToken = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
+    const token = agent.tokenEncoded ? Buffer.from(agent.tokenEncoded, 'base64').toString('utf-8') : accountToken;
+    if (!token) return { agent, error: 'No token available to fetch ships' };
+    const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } as const;
+    const baseURL = process.env['SPACE_TRADERS_API_BASE_URL'] || 'https://api.spacetraders.io/v2';
+    const client = axios.create({ baseURL, headers });
+    const shipsRes = await client.get('/my/ships');
+    const ships = shipsRes?.data?.data ?? [];
+    return { ships };
+  }
 }
 
 

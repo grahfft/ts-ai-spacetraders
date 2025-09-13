@@ -11,8 +11,16 @@ export class AgentDetailsPage {
     return this.page.getByRole('button', { name: /contracts/i });
   }
 
+  shipsSection() {
+    return this.page.getByRole('button', { name: /ships/i });
+  }
+
   async openContracts() {
     await this.contractsSection().click();
+  }
+
+  async openShips() {
+    await this.shipsSection().click();
   }
 
   async acceptFirstContract() {
