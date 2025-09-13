@@ -4,52 +4,31 @@ import React, { useEffect, useState, use as usePromise } from 'react';
 import { Box, Heading, Stack, Text, Divider, Skeleton, Button, Flex } from '@chakra-ui/react';
 import { SidebarNav, ContractsList, ShipsQuickCards, ShipsList, AgentDetailsProvider, useAgentDetails } from '@spacetraders/agent-ui';
 import { useSearchParams } from 'next/navigation';
+import { useGetAgentQuery, useGetAgentShipsQuery, useGetAgentSummaryQuery, useAcceptContractMutation } from '../../store';
 
 interface AgentDto { id: string; symbol: string; faction?: string | null }
 
 function AgentPageInner({ id }: { id: string }) {
   const searchParams = useSearchParams();
-  const [agent, setAgent] = useState<AgentDto | null>(null);
-  const [summary, setSummary] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { section, setSection, openShipSymbol, requestOpenShip, consumeOpenShip } = useAgentDetails();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [accepting, setAccepting] = useState<Record<string, boolean>>({});
-  const [ships, setShips] = useState<any[]>([]);
+  const { data: agent, isFetching: loadingAgent } = useGetAgentQuery(id);
+  const { data: summary, isFetching: loadingSummary } = useGetAgentSummaryQuery(id);
+  const { data: shipsData, isFetching: loadingShips, refetch: refetchShips } = useGetAgentShipsQuery(id);
+  const ships = shipsData?.ships ?? [];
+  const loading = loadingAgent || loadingSummary || loadingShips;
+  const [acceptContractApi, acceptState] = useAcceptContractMutation();
 
   const load = async () => {
-    setLoading(true);
     setError(null);
     try {
-      const [agentRes, summaryRes, shipsRes] = await Promise.all([
-        fetch(`/api/agents/${id}`, { cache: 'no-store' }),
-        fetch(`/api/agents/${id}/summary`, { cache: 'no-store' }),
-        fetch(`/api/agents/${id}/ships`, { cache: 'no-store' }),
-      ]);
-      const agentJson = await agentRes.json();
-      const summaryJson = await summaryRes.json();
-      const shipsJson = await shipsRes.json().catch(() => ({}));
-      if (!agentRes.ok) throw new Error(agentJson?.error ?? 'Failed to load agent');
-      if (!summaryRes.ok) throw new Error(summaryJson?.error ?? 'Failed to load summary');
-      if (!shipsRes.ok) {
-        // Non-fatal: ships failure should not block page
-        setShips([]);
-      } else {
-        setShips(Array.isArray(shipsJson?.ships) ? shipsJson.ships : []);
-      }
-      setAgent(agentJson);
-      setSummary(summaryJson);
+      await Promise.all([refetchShips()]);
     } catch (e: any) {
       setError(e?.message ?? 'Unknown error');
-    } finally {
-      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    void load();
-  }, [id]);
 
   // URL query param trigger: ?ship=SYMBOL or ?openShip=SYMBOL
   useEffect(() => {
@@ -79,11 +58,7 @@ function AgentPageInner({ id }: { id: string }) {
   const acceptContract = async (contractId: string) => {
     try {
       setAccepting((prev) => ({ ...prev, [contractId]: true }));
-      const res = await fetch(`/api/agents/${id}/contracts/${contractId}/accept`, { method: 'POST' });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err?.error || `Failed to accept contract ${contractId}`);
-      }
+      await acceptContractApi({ id, contractId }).unwrap();
       await load();
     } catch (e: any) {
       setError(e?.message ?? 'Failed to accept contract');

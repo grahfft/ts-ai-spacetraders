@@ -1,9 +1,9 @@
 'use client';
 
 import styles from './page.module.css';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Button, Heading, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
-import axios from 'axios';
+import { useGetAgentsQuery } from './store';
 import { AgentsTable } from '@spacetraders/agents-table';
 import { CreateNewAgentForm } from '@spacetraders/create-agent';
 
@@ -15,26 +15,11 @@ interface AgentDto {
 
 export default function Page() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [agents, setAgents] = useState<AgentDto[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  const fetchAgents = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(`/api/agents`);
-      setAgents(Array.isArray(data) ? data : []);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAgents();
-  }, []);
+  const { data: agents = [], isFetching: loading, refetch } = useGetAgentsQuery();
 
   const handleSuccess = () => {
     onClose();
-    fetchAgents();
+    void refetch();
   };
 
   return (

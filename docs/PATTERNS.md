@@ -29,3 +29,25 @@
 Token handling
 - The backend uses a server-side M2M token via `SPACE_TRADERS_ACCOUNT_TOKEN` exclusively.
 - The UI does not send tokens and does not store tokens; no `x-account-token` header is used.
+
+## Data Layer (Redux Toolkit + RTK Query)
+
+- UI data fetching is centralized via RTK Query hooks that call our Next.js API routes (never external endpoints).
+- Store location: `apps/spacetraders-ui/src/app/store.ts` with an `api` slice.
+- Hooks exposed:
+  - `useGetAgentsQuery()`
+  - `useGetAgentQuery(id)`
+  - `useGetAgentSummaryQuery(id)`
+  - `useGetAgentShipsQuery(id)`
+  - `useAcceptContractMutation()`
+- Provider: `ReduxProvider` wraps the app in `app/layout.tsx`.
+- Caching/invalidations:
+  - Tags: `Agent`, `Summary`, `Contracts`, `Ships` keyed by `id`.
+  - Mutations (e.g., accept contract) invalidate `Summary` and `Contracts` for the agent.
+
+Example usage (page component):
+
+```tsx
+const { data: summary, isFetching } = useGetAgentSummaryQuery(agentId);
+const [acceptContract] = useAcceptContractMutation();
+```
