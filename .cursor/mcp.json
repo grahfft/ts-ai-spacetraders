@@ -16,7 +16,7 @@
     "github": {
       "url": "https://api.githubcopilot.com/mcp/",
       "headers": {
-        "Authorization": "Bearer REDACTED_GITHUB_TOKEN"
+        "Authorization": "Bearer ${GITHUB_TOKEN}"
       }
     }
   }
