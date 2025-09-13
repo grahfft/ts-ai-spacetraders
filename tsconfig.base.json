@@ -16,7 +16,10 @@
         "libs/components/agents-table/src/index.ts"
       ],
       "@spacetraders/api-agents": ["libs/api/agents-module/src/index.ts"],
+<<<<<<< HEAD
       "@spacetraders/contracts-module": ["libs/api/contracts-module/src/index.ts"],
+=======
+>>>>>>> main
       "@spacetraders/api-agents/register": [
         "libs/api/agents-module/src/lib/register-agent.ts"
       ],
@@ -25,9 +28,12 @@
       ],
       "@spacetraders/create-agent": [
         "libs/components/create-agent-form/src/index.ts"
+<<<<<<< HEAD
       ],
       "@spacetraders/agent-ui": [
         "libs/components/agent-ui/src/index.ts"
+=======
+>>>>>>> main
       ]
     }
   }

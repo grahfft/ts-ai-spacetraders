@@ -160,4 +160,3 @@ Our stance: follow the Testing Trophy. Concretely:
 - Run all tests: `pnpm run test`
 - Run project tests: `pnpm exec nx test <project>`
 - Run UI e2e (Playwright): `pnpm exec nx run spacetraders-ui-e2e:e2e`
-
