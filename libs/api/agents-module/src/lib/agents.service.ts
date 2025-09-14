@@ -70,6 +70,35 @@ export class AgentsService {
     const ships = shipsRes?.data?.data ?? [];
     return { ships };
   }
+
+  private async createAuthedClientForAgent(id: string) {
+    const agent = await this.findById(id);
+    if (!agent) throw new Error('Not found');
+    const accountToken = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
+    const token = agent.tokenEncoded ? Buffer.from(agent.tokenEncoded, 'base64').toString('utf-8') : accountToken;
+    if (!token) throw new Error('No token available');
+    const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } as const;
+    const baseURL = process.env['SPACE_TRADERS_API_BASE_URL'] || 'https://api.spacetraders.io/v2';
+    return axios.create({ baseURL, headers });
+  }
+
+  async orbitShip(id: string, shipSymbol: string): Promise<any> {
+    const client = await this.createAuthedClientForAgent(id);
+    const res = await client.post(`/my/ships/${shipSymbol}/orbit`, {});
+    return res.data;
+  }
+
+  async dockShip(id: string, shipSymbol: string): Promise<any> {
+    const client = await this.createAuthedClientForAgent(id);
+    const res = await client.post(`/my/ships/${shipSymbol}/dock`, {});
+    return res.data;
+  }
+
+  async refuelShip(id: string, shipSymbol: string): Promise<any> {
+    const client = await this.createAuthedClientForAgent(id);
+    const res = await client.post(`/my/ships/${shipSymbol}/refuel`, {});
+    return res.data;
+  }
 }
 
 

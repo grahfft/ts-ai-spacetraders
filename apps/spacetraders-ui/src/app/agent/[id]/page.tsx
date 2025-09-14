@@ -4,7 +4,7 @@ import React, { useEffect, useState, use as usePromise } from 'react';
 import { Box, Heading, Stack, Text, Divider, Skeleton, Button, Flex } from '@chakra-ui/react';
 import { SidebarNav, ContractsList, ShipsQuickCards, ShipsList, AgentDetailsProvider, useAgentDetails } from '@spacetraders/agent-ui';
 import { useSearchParams } from 'next/navigation';
-import { useGetAgentQuery, useGetAgentShipsQuery, useGetAgentSummaryQuery, useAcceptContractMutation } from '../../store';
+import { useGetAgentQuery, useGetAgentShipsQuery, useGetAgentSummaryQuery, useAcceptContractMutation, useDockShipMutation, useOrbitShipMutation, useRefuelShipMutation } from '../../store';
 
 interface AgentDto { id: string; symbol: string; faction?: string | null }
 
@@ -20,6 +20,9 @@ function AgentPageInner({ id }: { id: string }) {
   const ships = shipsData?.ships ?? [];
   const loading = loadingAgent || loadingSummary || loadingShips;
   const [acceptContractApi, acceptState] = useAcceptContractMutation();
+  const [dockShip] = useDockShipMutation();
+  const [orbitShip] = useOrbitShipMutation();
+  const [refuelShip] = useRefuelShipMutation();
 
   const load = async () => {
     setError(null);
@@ -167,7 +170,15 @@ function AgentPageInner({ id }: { id: string }) {
                 <Skeleton height="18px" width="30%" />
               </>
             ) : (
-              <ShipsList ships={ships} openSymbol={openShipSymbol} />
+              <ShipsList
+                ships={ships}
+                openSymbol={openShipSymbol}
+                actions={{
+                  onDock: async (symbol) => { try { await dockShip({ id, shipSymbol: symbol }).unwrap(); await load(); } catch (e) { setError('Dock failed'); } },
+                  onOrbit: async (symbol) => { try { await orbitShip({ id, shipSymbol: symbol }).unwrap(); await load(); } catch (e) { setError('Orbit failed'); } },
+                  onRefuel: async (symbol) => { try { await refuelShip({ id, shipSymbol: symbol }).unwrap(); await load(); } catch (e) { setError('Refuel failed'); } },
+                }}
+              />
             )}
           </>
         )}
