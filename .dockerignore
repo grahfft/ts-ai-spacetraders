@@ -1,11 +1,15 @@
-node_modules
+# Dependencies
+**/node_modules
 .pnpm-store
 
-# Nx / build outputs
-.dist
-/dist
-/.next
-coverage
+# Build outputs / caches
+**/dist
+**/.next
+**/build
+**/.turbo
+**/.cache
+test-results/**
+tmp/**
 
 # VCS
 .git
