@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './global.css';
 import { AppChakraProvider } from '@spacetraders/chakra-provider';
+import { ReduxProvider } from './providers/ReduxProvider';
 
 export const metadata: Metadata = {
   title: 'SpaceTraders Site',
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AppChakraProvider>{children}</AppChakraProvider>
+        <ReduxProvider>
+          <AppChakraProvider>{children}</AppChakraProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

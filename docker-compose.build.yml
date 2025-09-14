@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  service:
+    build:
+      context: .
+      dockerfile: apps/spacetraders-service/Dockerfile
+    image: spacetraders-service:prod
+  ui:
+    build:
+      context: .
+      dockerfile: apps/spacetraders-ui/Dockerfile
+    image: spacetraders-ui:prod
