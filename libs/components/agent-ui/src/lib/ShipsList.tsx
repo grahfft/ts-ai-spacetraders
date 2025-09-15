@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Stack, Text } from '@chakra-ui/react';
+import { Box, Stack, Text, Button, HStack } from '@chakra-ui/react';
 
 export interface Ship {
   symbol: string;
@@ -12,7 +12,7 @@ export interface Ship {
   cargo?: { units?: number; capacity?: number };
 }
 
-export function ShipsList({ ships, openSymbol }: { ships: Ship[]; openSymbol?: string | null }) {
+export function ShipsList({ ships, openSymbol, actions }: { ships: Ship[]; openSymbol?: string | null; actions?: { onOrbit?: (symbol: string) => void; onDock?: (symbol: string) => void; onRefuel?: (symbol: string) => void; } }) {
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [highlighted, setHighlighted] = useState<Record<string, boolean>>({});
   const shipElementBySymbolRef = useRef<Record<string, HTMLDivElement | null>>({});
@@ -64,6 +64,13 @@ export function ShipsList({ ships, openSymbol }: { ships: Ship[]; openSymbol?: s
                 )}
                 {s.nav?.systemSymbol && s.nav?.waypointSymbol && (
                   <Text>location: {s.nav.systemSymbol}/{s.nav.waypointSymbol}</Text>
+                )}
+                {actions && (
+                  <HStack mt={2} spacing={2}>
+                    <Button size="sm" onClick={() => actions?.onDock?.(s.symbol)}>Dock</Button>
+                    <Button size="sm" onClick={() => actions?.onOrbit?.(s.symbol)}>Orbit</Button>
+                    <Button size="sm" onClick={() => actions?.onRefuel?.(s.symbol)}>Refuel</Button>
+                  </HStack>
                 )}
               </Box>
             )}

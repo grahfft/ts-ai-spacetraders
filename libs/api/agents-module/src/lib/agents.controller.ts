@@ -8,9 +8,7 @@ export class AgentsController {
 
   @Get()
   async list() {
-    const token = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
-    if (!token) return [];
-    return this.agentsService.listAgentsByAccountTokenHash(token);
+    return this.agentsService.listAllAgents();
   }
 
   @Post()
@@ -38,6 +36,31 @@ export class AgentsController {
   @Get(':id/ships')
   async ships(@Param('id') id: string) {
     return this.agentsService.fetchAgentShips(id);
+  }
+
+  // Ship Actions
+  @Post(':id/ships/:shipSymbol/orbit')
+  async orbit(
+    @Param('id') id: string,
+    @Param('shipSymbol') shipSymbol: string,
+  ) {
+    return this.agentsService.orbitShip(id, shipSymbol);
+  }
+
+  @Post(':id/ships/:shipSymbol/dock')
+  async dock(
+    @Param('id') id: string,
+    @Param('shipSymbol') shipSymbol: string,
+  ) {
+    return this.agentsService.dockShip(id, shipSymbol);
+  }
+
+  @Post(':id/ships/:shipSymbol/refuel')
+  async refuel(
+    @Param('id') id: string,
+    @Param('shipSymbol') shipSymbol: string,
+  ) {
+    return this.agentsService.refuelShip(id, shipSymbol);
   }
 }
 

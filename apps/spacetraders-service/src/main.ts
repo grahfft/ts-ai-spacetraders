@@ -8,6 +8,7 @@ import { config as loadEnv } from 'dotenv';
 import { existsSync } from 'fs';
 import { resolve } from 'path';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { initializeTransactionalContext, addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { AppModule } from './app/app.module';
@@ -41,6 +42,15 @@ async function bootstrap() {
   });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+  // Swagger
+  const swaggerCfg = new DocumentBuilder()
+    .setTitle('SpaceTraders Service API')
+    .setDescription('Backend proxy endpoints for SpaceTraders')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const doc = SwaggerModule.createDocument(app, swaggerCfg);
+  SwaggerModule.setup(`${globalPrefix}/docs`, app, doc);
   const port = process.env.PORT || 3000;
   await app.listen(port);
   Logger.log(

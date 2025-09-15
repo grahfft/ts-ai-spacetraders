@@ -18,6 +18,16 @@
         }
       }
     },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node -r ts-node/register -r tsconfig-paths/register apps/spacetraders-service/src/migrate.ts",
+        "cwd": ".",
+        "env": {
+          "TS_NODE_TRANSPILE_ONLY": "true"
+        }
+      }
+    },
     "prune-lockfile": {
       "dependsOn": ["build"],
       "cache": true,

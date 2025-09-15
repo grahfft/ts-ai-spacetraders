@@ -1,7 +1,6 @@
 import { AgentsService } from './agents.service';
 import { Repository } from 'typeorm';
 import axios from 'axios';
-import { createHash } from 'crypto';
 
 jest.mock('axios');
 jest.mock('typeorm-transactional', () => ({
@@ -30,7 +29,7 @@ describe('AgentsService.registerAgent (BDD)', () => {
     else delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
   });
 
-  it('Given server token is set, When registering, Then it saves agent with encoded token and sha256 hash', async () => {
+  it('Given server token is set, When registering, Then it saves agent with encoded token', async () => {
     const repo = repoMock();
     const svc = new AgentsService(repo as any);
     await svc.registerAgent({ symbol: 'S', faction: 'F' });
@@ -38,19 +37,10 @@ describe('AgentsService.registerAgent (BDD)', () => {
       expect.objectContaining({
         symbol: 'S',
         tokenEncoded: Buffer.from('AGENT_TOKEN').toString('base64'),
-        accountTokenHash: createHash('sha256').update('ACCOUNT_TOKEN').digest('hex'),
       })
     );
     expect((repo as any).save).toHaveBeenCalled();
   });
 
-  it('Given server token is missing, When registering, Then it throws a helpful error', async () => {
-    delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
-    const repo = repoMock();
-    const svc = new AgentsService(repo as any);
-    await expect(svc.registerAgent({ symbol: 'S', faction: 'F' })).rejects.toThrow(
-      /Missing SPACE_TRADERS_ACCOUNT_TOKEN/i
-    );
-    expect((repo as any).save).not.toHaveBeenCalled();
-  });
+  // token being missing is allowed; we now save agent regardless
 });

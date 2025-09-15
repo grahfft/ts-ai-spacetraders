@@ -43,6 +43,30 @@ export const api = createApi({
       }),
       invalidatesTags: (_res, _err, { id }) => [{ type: 'Contracts', id }, { type: 'Summary', id }],
     }),
+    orbitShip: builder.mutation<any, { id: string; shipSymbol: string }>({
+      query: ({ id, shipSymbol }) => ({
+        url: `agents/${id}/ships`,
+        method: 'POST',
+        body: { action: 'orbit', shipSymbol },
+      }),
+      invalidatesTags: (_res, _err, { id }) => [{ type: 'Ships', id }, { type: 'Summary', id }],
+    }),
+    dockShip: builder.mutation<any, { id: string; shipSymbol: string }>({
+      query: ({ id, shipSymbol }) => ({
+        url: `agents/${id}/ships`,
+        method: 'POST',
+        body: { action: 'dock', shipSymbol },
+      }),
+      invalidatesTags: (_res, _err, { id }) => [{ type: 'Ships', id }, { type: 'Summary', id }],
+    }),
+    refuelShip: builder.mutation<any, { id: string; shipSymbol: string }>({
+      query: ({ id, shipSymbol }) => ({
+        url: `agents/${id}/ships`,
+        method: 'POST',
+        body: { action: 'refuel', shipSymbol },
+      }),
+      invalidatesTags: (_res, _err, { id }) => [{ type: 'Ships', id }, { type: 'Summary', id }],
+    }),
   }),
 });
 
@@ -52,6 +76,9 @@ export const {
   useGetAgentSummaryQuery,
   useGetAgentShipsQuery,
   useAcceptContractMutation,
+  useOrbitShipMutation,
+  useDockShipMutation,
+  useRefuelShipMutation,
 } = api;
 
 export const store = configureStore({

@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AgentsModule } from '@spacetraders/api-agents';
 import { ContractsModule } from '@spacetraders/contracts-module';
 import { Agent } from '@spacetraders/api-agents';
+import { join } from 'path';
+import { migrations } from '../migrations';
 
 @Module({
   imports: [
@@ -14,7 +16,8 @@ import { Agent } from '@spacetraders/api-agents';
       password: process.env['POSTGRES_PASSWORD'] ?? 'spacetraders',
       database: process.env['POSTGRES_DB'] ?? 'spacetraders',
       entities: [Agent],
-      synchronize: true,
+      synchronize: false,
+      migrations,
     }),
     AgentsModule,
     ContractsModule,

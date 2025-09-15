@@ -3,44 +3,27 @@ import { AgentsController } from './agents.controller';
 import { AgentsService } from './agents.service';
 
 describe('AgentsController', () => {
-  it('returns [] when env token missing', async () => {
-    const original = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
-    delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
+  it('returns [] when service returns none', async () => {
     const module = await Test.createTestingModule({
       controllers: [AgentsController],
-      providers: [{ provide: AgentsService, useValue: { listAgentsByAccountTokenHash: jest.fn() } }],
+      providers: [{ provide: AgentsService, useValue: { listAllAgents: jest.fn().mockResolvedValue([]) } }],
     }).compile();
     const controller = module.get(AgentsController);
     const res = await controller.list();
     expect(res).toEqual([]);
-    if (original) process.env['SPACE_TRADERS_ACCOUNT_TOKEN'] = original;
   });
 
-  it('returns service results when env token set', async () => {
+  it('returns service results', async () => {
     const module = await Test.createTestingModule({
       controllers: [AgentsController],
       providers: [{
         provide: AgentsService,
-        useValue: { listAgentsByAccountTokenHash: jest.fn().mockResolvedValue([{ symbol: 'A' }]) },
+        useValue: { listAllAgents: jest.fn().mockResolvedValue([{ symbol: 'A' }]) },
       }],
     }).compile();
     const controller = module.get(AgentsController);
     const res = await controller.list();
     expect(res).toEqual([{ symbol: 'A' }]);
   });
-
-  it('uses env token', async () => {
-    const original = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
-    process.env['SPACE_TRADERS_ACCOUNT_TOKEN'] = 'env-token';
-    const mock = { listAgentsByAccountTokenHash: jest.fn().mockResolvedValue([{ symbol: 'B' }]) };
-    const module = await Test.createTestingModule({
-      controllers: [AgentsController],
-      providers: [{ provide: AgentsService, useValue: mock }],
-    }).compile();
-    const controller = module.get(AgentsController);
-    const res = await controller.list();
-    expect(mock.listAgentsByAccountTokenHash).toHaveBeenCalledWith('env-token');
-    expect(res).toEqual([{ symbol: 'B' }]);
-    if (original) process.env['SPACE_TRADERS_ACCOUNT_TOKEN'] = original; else delete (process.env as any)['SPACE_TRADERS_ACCOUNT_TOKEN'];
-  });
+  
 });
