@@ -15,9 +15,7 @@ export class Agent {
   @Column({ type: 'varchar', length: 255, nullable: true })
   email?: string | null;
 
-  @Index()
-  @Column({ type: 'varchar', length: 64, nullable: true })
-  accountTokenHash?: string | null;
+  // removed accountTokenHash (M2M token is global, no per-token scoping needed)
 
   @Column({ type: 'text', nullable: true })
   tokenEncoded?: string | null;

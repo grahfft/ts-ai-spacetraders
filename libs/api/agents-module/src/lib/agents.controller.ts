@@ -8,9 +8,7 @@ export class AgentsController {
 
   @Get()
   async list() {
-    const token = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
-    if (!token) return [];
-    return this.agentsService.listAgentsByAccountTokenHash(token);
+    return this.agentsService.listAllAgents();
   }
 
   @Post()

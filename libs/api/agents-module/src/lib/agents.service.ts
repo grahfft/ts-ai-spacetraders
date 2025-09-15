@@ -18,22 +18,16 @@ export class AgentsService {
   async registerAgent(input: RegisterAgentInput): Promise<RegisterAgentResponseData> {
     const { symbol, faction, email, baseUrl } = input;
     const data = await registerAgent({ symbol, faction, email, baseUrl });
-    const accountToken = process.env['SPACE_TRADERS_ACCOUNT_TOKEN'];
     const tokenValue = (data as any)?.data?.token ?? (data as any)?.token ?? null;
-    let saved: Agent | null = null;
-    if (accountToken) {
-      const tokenEncoded = tokenValue ? Buffer.from(String(tokenValue)).toString('base64') : null;
-      const accountTokenHash = createHash('sha256').update(String(accountToken)).digest('hex');
-      const entity = this.agentRepo.create({ symbol, faction, email: email ?? null, tokenEncoded, accountTokenHash });
-      saved = await this.agentRepo.save(entity);
-    }
+    const tokenEncoded = tokenValue ? Buffer.from(String(tokenValue)).toString('base64') : null;
+    const entity = this.agentRepo.create({ symbol, faction, email: email ?? null, tokenEncoded });
+    const saved = await this.agentRepo.save(entity);
     return { ...(data as any), id: saved?.id, agent: saved } as RegisterAgentResponseData;
   }
 
   @Transactional()
-  async listAgentsByAccountTokenHash(accountToken: string): Promise<Agent[]> {
-    const accountTokenHash = createHash('sha256').update(String(accountToken)).digest('hex');
-    return this.agentRepo.find({ where: { accountTokenHash } });
+  async listAllAgents(): Promise<Agent[]> {
+    return this.agentRepo.find({});
   }
 
   async findById(id: string): Promise<Agent | null> {
